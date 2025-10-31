@@ -1,0 +1,61 @@
+import React from "react";
+import InterviewTypeCard from "./InterviewTypeCard";
+
+const InterviewTypePage = () => {
+  const interviewTypes = [
+    {
+      title: "Technical",
+      level: "Advanced",
+      description: "Practice coding problems and technical concepts",
+      duration: "45–60 min",
+      questions: "25 questions",
+      color: "blue",
+    },
+    {
+      title: "Behavioral",
+      level: "Intermediate",
+      description: "STAR method and soft skills assessment",
+      duration: "30–45 min",
+      questions: "15 questions",
+      color: "green",
+    },
+    {
+      title: "System Design",
+      level: "Expert",
+      description: "Architecture and scalability discussions",
+      duration: "60–90 min",
+      questions: "8 questions",
+      color: "red",
+    },
+    {
+      title: "Case Study",
+      level: "Advanced",
+      description: "Business scenarios and problem-solving",
+      duration: "45–60 min",
+      questions: "12 questions",
+      color: "purple",
+    },
+  ];
+
+  return (
+    <div className=" py-20 bg-gradient-to-b from-[#f4f8ff] to-[#e6eefc]  px-6">
+      <div className="max-w-6xl mx-auto text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2 font-orbitron">
+          Choose Your Interview Type
+        </h1>
+        <p className="text-gray-600 mb-10">
+          Practice with different interview formats tailored to your industry
+          and role.
+        </p>
+
+        <div className="flex flex-wrap justify-center gap-6">
+          {interviewTypes.map((type, index) => (
+            <InterviewTypeCard key={index} {...type} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default InterviewTypePage;
