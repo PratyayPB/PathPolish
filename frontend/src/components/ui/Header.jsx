@@ -72,7 +72,7 @@ const Header = () => {
             </li>
 
             <li className="pl-2">
-              <button className="bg-[#3E3651] text-white px-6 py-2 rounded-4xl">
+              <button className="bg-[#3E3651] text-white px-6 py-2 rounded-4xl hover:bg-violet-800">
                 Login
               </button>
             </li>

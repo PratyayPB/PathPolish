@@ -34,10 +34,10 @@ const Faq = () => {
       {/* Header / Intro */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-3 flex flex-col items-center">
-          <h2 className="text-3xl md:text-4xl font-semibold">
+          <h2 className="text-3xl md:text-4xl text-white font-bold title-font ">
             Frequently Asked Questions
           </h2>
-          <p className="mt-4 max-w-2xl text-center">
+          <p className="mt-4 max-w-2xl text-center body-font font-medium text-white">
             Lorem ipsum dolor sit amet consectetur adipisicing eli mattis sit
             phasellus mollis sit aliquam sit nullam.
           </p>
@@ -48,7 +48,7 @@ const Faq = () => {
               {tabs.map((t) => (
                 <li
                   key={t}
-                  className={`py-3 cursor-pointer text-sm ${
+                  className={`py-3 font-medium body-font text-[#3E3651] cursor-pointer text-sm ${
                     activeTab === t ? "border-b-2" : ""
                   }`}
                   onClick={() => setActiveTab(t)}
@@ -79,8 +79,10 @@ const Faq = () => {
                     onClick={() => toggle(i)}
                     className="w-full flex items-center justify-between p-4 text-left"
                   >
-                    <span className="font-medium">{f.q}</span>
-                    <span className="ml-4 text-xl">{open ? "✕" : "+"}</span>
+                    <span className="font-medium body-font">{f.q}</span>
+                    <span className="ml-4 text-xl cursor-pointer">
+                      {open ? "✕" : "+"}
+                    </span>
                   </button>
 
                   <div
@@ -89,7 +91,7 @@ const Faq = () => {
                     aria-labelledby={`faq-btn-${i}`}
                     className={`${
                       open ? "block" : "hidden"
-                    } p-4 border-t text-sm`}
+                    } p-4 border-t text-sm body-font`}
                   >
                     {f.a}
                   </div>

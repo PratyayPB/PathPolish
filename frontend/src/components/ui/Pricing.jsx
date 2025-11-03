@@ -54,13 +54,13 @@ const Pricing = forwardRef((props, ref) => {
       <div className="max-w-6xl mx-auto px-6 text-center">
         {/* Header */}
         <div className="mb-12">
-          <h4 className="text-sm tracking-wider text-gray-500 uppercase">
+          <h4 className="text-sm tracking-wider text-[#3E3651] font-black body-font uppercase">
             Pricing
           </h4>
-          <h2 className="text-4xl font-extrabold text-gray-800 mt-2">
+          <h2 className="text-4xl font-extrabold text-white title-font mt-2">
             Affordable pricing plans
           </h2>
-          <p className="text-gray-500 mt-4 max-w-2xl mx-auto">
+          <p className="text-white body-font leading-relaxed mt-4 max-w-2xl mx-auto">
             Lorem ipsum dolor sit amet consectetur adipiscing elit tortor eu
             egestas morbi sem vulputate etiam facilisis pellentesque ut quis.
           </p>
@@ -70,10 +70,10 @@ const Pricing = forwardRef((props, ref) => {
         <div className="flex justify-center space-x-4 mb-12">
           <button
             onClick={() => setBilling("monthly")}
-            className={`px-6 py-2 rounded-full text-sm font-medium transition ${
+            className={`px-6 py-2 rounded-full text-sm font-medium transition  ${
               billing === "monthly"
-                ? "bg-indigo-600 text-white"
-                : "bg-white text-gray-600 border border-gray-200"
+                ? "bg-[#3E3651] text-white hover:bg-violet-800"
+                : "bg-white text-[#3E3651] border border-gray-200"
             }`}
           >
             Monthly plan
@@ -82,8 +82,8 @@ const Pricing = forwardRef((props, ref) => {
             onClick={() => setBilling("annual")}
             className={`px-6 py-2 rounded-full text-sm font-medium transition ${
               billing === "annual"
-                ? "bg-indigo-600 text-white"
-                : "bg-white text-gray-600 border border-gray-200"
+                ? "bg-[#3E3651] text-white"
+                : "bg-white text-[#3E3651] hover:bg-violet-800 border border-gray-200"
             }`}
           >
             Annual plan
@@ -97,14 +97,14 @@ const Pricing = forwardRef((props, ref) => {
               key={index}
               className={`p-8 rounded-2xl shadow-sm border ${
                 plan.popular
-                  ? "bg-indigo-600 text-white border-indigo-700"
+                  ? "bg-[#3E3651] text-white border-violet-800"
                   : "bg-white text-gray-800 border-gray-200"
               }`}
             >
               <div className="flex justify-between items-center">
-                <h3 className="text-xl font-bold">{plan.name}</h3>
+                <h3 className="text-xl font-bold body-font ">{plan.name}</h3>
                 {plan.popular && (
-                  <span className="bg-white text-indigo-600 text-xs font-semibold px-2 py-1 rounded-full">
+                  <span className="bg-white text-[#3E3651] text-xs font-semibold px-2 py-1 rounded-full">
                     Popular
                   </span>
                 )}
@@ -131,7 +131,7 @@ const Pricing = forwardRef((props, ref) => {
 
               <ul className="space-y-3 mb-8 text-sm">
                 {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-center gap-2">
+                  <li key={i} className="flex items-center gap-2 body-font">
                     <CheckCircle
                       className={`w-5 h-5 ${
                         plan.popular ? "text-white" : "text-indigo-600"
@@ -143,10 +143,10 @@ const Pricing = forwardRef((props, ref) => {
               </ul>
 
               <button
-                className={`w-full py-3 rounded-full font-semibold transition ${
+                className={`w-full py-3 rounded-full font-semibold transition body-font ${
                   plan.popular
-                    ? "bg-white text-indigo-600 hover:bg-indigo-100"
-                    : "bg-indigo-600 text-white hover:bg-indigo-700"
+                    ? "bg-white text-[#3E3651] hover:bg-indigo-100"
+                    : "bg-[#3E3651] text-white hover:bg-violet-800"
                 }`}
               >
                 Get started

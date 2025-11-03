@@ -13,7 +13,7 @@ const FeatureCard = ({ image, feature, description, cta }) => {
       <h3 className="text-xl font-bold text-center title-font text-[#3E3651]">
         {feature}
       </h3>
-      <p className="text-white text-center body-font">{description}</p>
+      <p className="text-[#3E3651] text-center body-font">{description}</p>
       <button className="bg-[#3E3651] p-3 rounded-md hover:bg-violet-800 text-white title-font transition-colors">
         {cta}
       </button>

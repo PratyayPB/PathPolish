@@ -8,7 +8,7 @@ const About = forwardRef((props, ref) => {
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 px-6 md:px-12">
         {/* Left Content */}
         <div className="md:w-1/2 space-y-6">
-          <h2 className="text-4xl font-extrabold text-[#3E3651] title-font leading-tight">
+          <h2 className="text-4xl font-extrabold text-white title-font leading-tight">
             About PathPolish
           </h2>
           <p className="text-white body-font leading-relaxed">

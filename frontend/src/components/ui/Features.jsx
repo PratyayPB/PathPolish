@@ -4,7 +4,7 @@ const Features = () => {
   return (
     <div className="container flex flex-col justify-center items-center  gap-12 my-60 px-25 ">
       <div className="text flex flex-col gap-4 items-center w-[70vw]">
-        <h1 className="text-3xl font-bold title-font text-center text-[#3E3651]">
+        <h1 className="text-3xl font-bold title-font text-center text-white">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum,
           veniam.
         </h1>

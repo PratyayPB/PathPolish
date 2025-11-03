@@ -54,7 +54,7 @@ export default function Highlights() {
 
           <h2
             id="highlights-heading"
-            className="text-2xl md:text-3xl font-extrabold text-[#3E3651] title-font leading-tight"
+            className="text-2xl md:text-3xl font-extrabold text-white title-font leading-tight"
           >
             Numbers that showcase our success
           </h2>

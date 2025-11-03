@@ -12,17 +12,17 @@ const Footer = () => {
       <div className="newsletter-section flex flex-col md:flex-row md:items-end mb-20">
         <div className="left-section flex flex-col items-start text-left w-full md:w-1/2 gap-4">
           <img src={Logo} alt="" width={75} />
-          <p className="text-left">
+          <p className="text-left body-font font-meidum">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat,
             sed quos autem nisi odit harum laborum aspernatur aperiam.
             Consequuntur maxime corrupti voluptatem dignissimos!
           </p>
         </div>
         <div className="right-content flex flex-col items-center text-center w-full md:w-1/2">
-          <h2 className="text-2xl font-semibold mb-2">
+          <h2 className="text-2xl font-bold title-font text-[#3E3651] mb-2">
             Subscribe to our newsletter
           </h2>
-          <p className="mb-6 max-w-md">
+          <p className="mb-6 max-w-md body-font">
             Lorem ipsum dolor sit amet consectetur adipiscing elit aliquam
             mauris sed ma
           </p>
@@ -30,17 +30,19 @@ const Footer = () => {
             <input
               type="email"
               placeholder="Enter your email address"
-              className="flex-1 min-w-[200px] p-2 border rounded"
+              className="flex-1 min-w-[200px] p-2 border rounded border-gray-900 border-ac focus-outline-none"
             />
-            <button className="px-6 py-2 rounded bg-gray-100">Subscribe</button>
+            <button className="px-6 py-2 rounded-4xl bg-[#3E3651] text-white hover:bg-violet-800">
+              Subscribe
+            </button>
           </div>
         </div>
       </div>
 
       {/* Main Footer Content */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12 body-font">
         {/* About Us Column */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 body-font">
           <h3 className="text-lg font-semibold">About us</h3>
           <ul className="space-y-2">
             <li>Mission</li>
@@ -98,7 +100,7 @@ const Footer = () => {
 
       {/* Copyright Section */}
       <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t text-sm">
-        <p>Copyright © 2025 BRIX Agency | All Rights Reserved</p>
+        <p>Copyright © 2025 Pratyay Pratim Borah | All Rights Reserved</p>
         <div className="flex gap-4 mt-4 md:mt-0">
           <a href="#" className="hover:underline">
             Terms and Conditions
