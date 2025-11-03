@@ -1,23 +1,33 @@
 import React, { useState } from "react";
-
+import axios from "axios";
 const RoadmapForm = () => {
   const [formData, setFormData] = useState({
     duration: "",
     role: "",
   });
 
+  const [responseData, setResponseData] = useState(null);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Roadmap Form Submitted:", formData);
-    // Add API call or backend integration here
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/roadmap",
+        formData
+      );
+      setResponseData(res.data);
+    } catch (error) {
+      console.error("Error sending form data:", error);
+    }
+    
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-20 mb-40 bg-gradient-to-b from-[#e6eefc] to-[#f4f8ff] p-8 rounded-2xl shadow-md border border-gray-200">
+    <div className="max-w-4xl mx-auto mt-20 mb-40 bg-linear-to-b from-[#e6eefc] to-[#f4f8ff] p-8 rounded-2xl shadow-md border border-gray-200">
       <h2 className="text-2xl font-bold text-gray-800 mb-1 font-orbitron">
         Roadmap Generation Form
       </h2>
@@ -70,6 +80,17 @@ const RoadmapForm = () => {
           </button>
         </div>
       </form>
+      {/* Response Area */}
+      {responseData && (
+        <div className="mt-8 p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
+          <h3 className="text-xl font-semibold mb-4">
+            Your Customized Roadmap:
+          </h3>
+          <pre className="whitespace-pre-wrap text-gray-800">
+            {responseData.roadmap}
+          </pre>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,23 +1,42 @@
 import React, { useState } from "react";
+import axios from "axios";
+import ReactMarkdown from "react-markdown";
 
 const CareerAssessmentForm = () => {
   const [formData, setFormData] = useState({
+    name: "",
     interests: "",
     education: "",
     skills: "",
     goals: "",
+    experience: "",
     currentRole: "",
     industry: "",
   });
+  const [responseData, setResponseData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setResponseData(null);
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/career-guide",
+        formData
+      );
+      console.log("Server response:", res.data);
+      setResponseData(res.data);
+    } catch (error) {
+      console.error("Error sending form data:", error);
+    }
     console.log("Form submitted:", formData);
     // You can integrate your backend or AI API call here
+    setIsLoading(false);
   };
 
   return (
@@ -30,6 +49,18 @@ const CareerAssessmentForm = () => {
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Name */}
+        <div>
+          <label className="block text-gray-700 font-medium mb-1">Name</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Enter your full name"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
         {/* Interests */}
         <div>
           <label className="block text-gray-700 font-medium mb-1">
@@ -85,6 +116,20 @@ const CareerAssessmentForm = () => {
             rows="3"
           />
         </div>
+        {/* Experience */}
+        <div>
+          <label className="block text-gray-700 font-medium mb-1">
+            Experience
+          </label>
+          <input
+            type="text"
+            name="experience"
+            value={formData.experience}
+            onChange={handleChange}
+            placeholder="e.g., Internships, Projects, Jobs"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
 
         {/* Current Role */}
         <div>
@@ -132,6 +177,15 @@ const CareerAssessmentForm = () => {
           </button>
         </div>
       </form>
+
+      {/* --- RESPONSE AREA --- */}
+      {isLoading && <p>Generating your guide...</p>}
+
+      {responseData && (
+        <div className="career-guide-response">
+          <ReactMarkdown>{responseData.guide}</ReactMarkdown>
+        </div>
+      )}
     </div>
   );
 };

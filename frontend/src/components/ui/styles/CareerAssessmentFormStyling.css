@@ -1,0 +1,30 @@
+.career-guide-response {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.5rem;
+  line-height: 1.7;
+}
+
+.career-guide-response h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.career-guide-response ul,
+.career-guide-response ol {
+  padding-left: 20px;
+}
+
+.career-guide-response li {
+  margin-bottom: 0.5rem;
+}
+
+.career-guide-response a {
+  color: #007aff;
+  text-decoration: none;
+}
+
+.career-guide-response a:hover {
+  text-decoration: underline;
+}

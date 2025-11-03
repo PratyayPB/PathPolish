@@ -1,28 +1,31 @@
 import React, { forwardRef } from "react";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const About = forwardRef((props, ref) => {
   return (
-    <section ref={ref} id="about" className="py-20 bg-white scroll-mt-20">
+    <section ref={ref} id="about" className="py-20 scroll-mt-20">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 px-6 md:px-12">
         {/* Left Content */}
         <div className="md:w-1/2 space-y-6">
-          <h2 className="text-4xl font-extrabold text-gray-800 leading-tight">
+          <h2 className="text-4xl font-extrabold text-[#3E3651] title-font leading-tight">
             About PathPolish
           </h2>
-          <p className="text-gray-500 leading-relaxed">
+          <p className="text-white body-font leading-relaxed">
             By creating a visual guide along the way, the designer or developer
             can get input from the other people involved in the website such as
             the customer, their manager, and other members of the team.
           </p>
-          <p className="text-gray-500 leading-relaxed">
+          <p className="text-white body-font leading-relaxed">
             The visual guide will provide a view to the customer of what their
             website or project will end up looking like.
           </p>
 
-          <button className="flex items-center text-indigo-600 font-medium hover:text-indigo-800 transition-all">
-            Learn more <ArrowRight className="ml-2 w-4 h-4" />
-          </button>
+          <Link to="/contact">
+            <button className="flex items-center bg-[#3E3651] text-white rounded-4xl px-6 py-4 hover:bg-violet-800 cursor-pointer">
+              Contact Us
+            </button>
+          </Link>
         </div>
 
         {/* Right Image Section */}

@@ -54,12 +54,12 @@ export default function Highlights() {
 
           <h2
             id="highlights-heading"
-            className="text-2xl md:text-3xl font-semibold text-gray-700 leading-tight"
+            className="text-2xl md:text-3xl font-extrabold text-[#3E3651] title-font leading-tight"
           >
             Numbers that showcase our success
           </h2>
 
-          <p className="text-gray-500 max-w-prose">
+          <p className="text-white body-font max-w-prose">
             Lorem ipsum dolor sit amet consectetur nunc nunc sit velit eget
             sollicitudin sit posuere augue vestibulum eget turpis lobortis donec
           </p>
@@ -67,15 +67,15 @@ export default function Highlights() {
 
         <div className="flex gap-5 ">
           <div className="cards-left flex flex-col gap-4 pt-6">
-            <div className="bg-indigo-600 text-white rounded-xl shadow-md border border-transparent p-8  flex flex-col items-center text-center">
+            <div className="bg-[#3E3651] text-white rounded-xl shadow-md border border-transparent p-8  flex flex-col items-center text-center">
               <div className="text-3xl  font-bold">{cards[0].stat}</div>
-              <div className="font-semibold ">{cards[0].title}</div>
-              <p className="text-indigo-100 ">{cards[0].desc}</p>
+              <div className="font-semibold body-font">{cards[0].title}</div>
+              <p className="text-white font-light body-font">{cards[0].desc}</p>
             </div>
-            <div className="bg-indigo-600  rounded-xl shadow-md border border-transparent p-8  flex flex-col items-center text-center">
+            <div className="bg-[#3E3651] text-white  rounded-xl shadow-md border border-transparent p-8  flex flex-col items-center text-center">
               <div className="text-3xl  font-bold">{cards[1].stat}</div>
-              <div className="font-semibold ">{cards[1].title}</div>
-              <p className="">{cards[1].desc}</p>
+              <div className="font-semibold body-font">{cards[1].title}</div>
+              <p className="body-font font-light">{cards[1].desc}</p>
             </div>
           </div>
 
@@ -85,11 +85,15 @@ export default function Highlights() {
                 key={idx}
                 className="bg-gray-200 rounded-xl shadow-md border border-transparent p-8  flex flex-col items-center text-center"
               >
-                <div className="text-3xl font-bold text-gray-700">{c.stat}</div>
-                <div className="font-semibold text-sm text-gray-700 mt-1">
+                <div className="text-3xl font-bold text-[#3E3651]">
+                  {c.stat}
+                </div>
+                <div className="font-semibold body-font text-[#3E3651] mt-1">
                   {c.title}
                 </div>
-                <p className="text-gray-400 text-sm mt-2">{c.desc}</p>
+                <p className="text-[#3E3651] body-font font-medium text-sm mt-2">
+                  {c.desc}
+                </p>
               </article>
             ))}
           </div>

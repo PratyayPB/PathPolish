@@ -2,13 +2,13 @@ import React from "react";
 import FeatureCard from "./FeatureCard";
 const Features = () => {
   return (
-    <div className="container flex flex-col justify-center items-center  gap-12 my-60 px-25">
+    <div className="container flex flex-col justify-center items-center  gap-12 my-60 px-25 ">
       <div className="text flex flex-col gap-4 items-center w-[70vw]">
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-3xl font-bold title-font text-center text-[#3E3651]">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum,
           veniam.
         </h1>
-        <p className="text-center">
+        <p className="text-center text-white">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. At placeat
           voluptates pariatur architecto maxime ipsum voluptatibus quidem, harum
           numquam atque optio dolor quam doloremque praesentium nemo culpa eaque

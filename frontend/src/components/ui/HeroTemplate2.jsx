@@ -1,8 +1,11 @@
 import React from "react";
-
+import bg from "../../assets/background.png";
 export default function HeroTemplate2() {
   return (
-    <section className="py-12 px-4">
+    <section
+      className="py-12 px-4  bg-cover bg-center h-[90vh] "
+      style={{ backgroundImage: `url(${bg})` }}
+    >
       <div className="max-w-5xl min-h-screen pt-30 mx-auto items-center">
         {/* Left card */}
         <div className=" absolute mt-10 ml-10 max-w-xl">

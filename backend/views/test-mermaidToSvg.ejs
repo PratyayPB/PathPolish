@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Mermaid SVG Test</title>
+    <script type="module">
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+
+        mermaid.initialize({ startOnLoad: true });
+
+        let mermaidCode = `graph TD
+    A["Start: Frontend Learning Journey (6 Months)"] --> B["Month 1: Web Foundations - HTML & CSS"]
+    B --> B1["HTML5: Structure, Semantics, Forms, Accessibility Basics"]
+    B --> B2["CSS3: Selectors, Box Model, Display, Position"]
+    B --> B3["CSS: Flexbox, CSS Grid, Responsive Design (Media Queries)"]
+    B1 & B2 & B3 --> P1["Project: Personal Portfolio Website - Static"]
+    B --> C["Month 2: JavaScript Core & Version Control"]
+    C --> C1["JavaScript Basics: Variables, Data Types, Operators, Control Flow"]
+    C --> C2["JavaScript: Functions, Arrays, Objects, DOM Manipulation"]
+    C --> C3["ES6+: Arrow Functions, Destructuring, Spread/Rest, Modules"]
+    C --> C4["Git & GitHub: Basic Commands, Branching, Merging, PRs"]
+    C1 & C2 & C3 & C4 --> P2["Project: Interactive To-Do List / Calculator with Git"]
+    C --> D["Month 3: Asynchronous JS & Modern Tooling"]
+    D --> D1["Asynchronous JS: Callbacks, Promises, Async/Await"]
+    D --> D2["Fetch API / Axios: Data Consumption from REST APIs"]
+    D --> D3["NPM / Yarn: Package Management"]
+    D --> D4["Introduction to Build Tools: Webpack / Vite (Concepts)"]
+    D1 & D2 & D3 & D4 --> P3["Project: Weather App / Movie Search App (API Integration)"]
+    D --> E["Month 4: Frontend Framework - React (or Vue)"]
+    E --> E1{"Choose ONE: React OR Vue.js"}
+    E1 --> E1a["React Fundamentals: Components, JSX, Props, State, Hooks"]
+    E1 --> E1b["Vue.js Fundamentals: Components, Directives, Reactivity, Vue CLI"]
+    E --> E2["Framework Routing: React Router / Vue Router"]
+    E --> E3["CSS-in-JS (Styled Components) OR Utility-First CSS (Tailwind CSS)"]
+    E1a & E1b & E2 & E3 --> P4["Project: E-commerce Product Page / Blog with Routing & Styling"]
+    E --> F["Month 5: State Management & Advanced Framework Concepts"]
+    F --> F1["State Management: React Context API + Redux Toolkit OR Vuex / Pinia"]
+    F --> F2["Form Handling & Validation"]
+    F --> F3["Deployment Basics: Netlify, Vercel, GitHub Pages"]
+    F1 & F2 & F3 --> P5["Project: Complex CRM Dashboard / Shopping Cart with State Management"]
+    F --> G["Month 6: Testing, Performance & Further Growth"]
+    G --> G1["Unit Testing: Jest / React Testing Library OR Vitest / Vue Test Utils"]
+    G --> G2["Performance Optimization: Lazy Loading, Code Splitting, Image Optimization"]
+    G --> G3["Accessibility (A11y) Best Practices"]
+    G --> G4["UI/UX Principles: User Flow, Wireframing (Concepts)"]
+    G1 & G2 & G3 & G4 --> P6["Project: Refine P5, Add Tests, Optimize Performance, Deploy Final Version"]
+    G --> H["Future Growth: Specialization & Advanced Topics"]
+    H --> H1["Server-Side Rendering (SSR) / Static Site Generation (SSG): Next.js / Nuxt.js"]
+    H --> H2["Progressive Web Apps (PWAs)"]
+    H --> H3["Backend Integration: Node.js/Express, Firebase"]
+    H --> H4["Web Components / Micro-Frontends"]
+    H --> H5["Advanced DevOps & CI/CD"]
+    H --> H6["Contributing to Open Source"]
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style P1 fill:#afa,stroke:#333,stroke-width:1px
+    style P2 fill:#afa,stroke:#333,stroke-width:1px
+    style P3 fill:#afa,stroke:#333,stroke-width:1px
+    style P4 fill:#afa,stroke:#333,stroke-width:1px
+    style P5 fill:#afa,stroke:#333,stroke-width:1px
+    style P6 fill:#afa,stroke:#333,stroke-width:1px
+    style H fill:#9cf,stroke:#333,stroke-width:2px
+    `;
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const { svg } = await mermaid.render("graphDiv", mermaidCode);
+            const output = document.getElementById("output");
+            output.innerHTML = svg;
+
+            document.getElementById("downloadBtn").addEventListener("click", () => {
+                const blob = new Blob([svg], { type: "image/svg+xml" });
+                const url = URL.createObjectURL(blob);
+
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = "frontend-roadmap.svg";
+                link.click();
+
+                URL.revokeObjectURL(url);
+            });
+        });
+    </script>
+</head>
+
+<body style="font-family:sans-serif; text-align:center;">
+    <h2>Frontend Developer Roadmap (Mermaid SVG)</h2>
+    <div id="output" style="margin: 20px auto; width: 95%;"></div>
+    <button id="downloadBtn"
+        style="margin-top:20px; padding:10px 20px; cursor:pointer; background-color:#333; color:white; border:none; border-radius:6px;">
+        Download SVG
+    </button>
+</body>
+
+</html>

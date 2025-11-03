@@ -50,7 +50,7 @@ const Pricing = forwardRef((props, ref) => {
   ];
 
   return (
-    <section ref={ref} id="pricing" className="py-20 bg-gray-50 scroll-mt-20">
+    <section ref={ref} id="pricing" className="py-20  scroll-mt-20">
       <div className="max-w-6xl mx-auto px-6 text-center">
         {/* Header */}
         <div className="mb-12">

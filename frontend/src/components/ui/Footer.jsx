@@ -1,9 +1,13 @@
 import React from "react";
 import Logo from "../../assets/logo-pathpolish.png";
+import bg from "../../assets/background.png";
 
 const Footer = () => {
   return (
-    <footer className="container mx-auto  py-12 px-50">
+    <footer
+      className="container mx-auto  py-12 px-50 bg-cover bg-center bg-[#f8f5f5] bg-blend-multiply"
+      style={{ backgroundImage: `url(${bg})` }}
+    >
       {/* Newsletter Section */}
       <div className="newsletter-section flex flex-col md:flex-row md:items-end mb-20">
         <div className="left-section flex flex-col items-start text-left w-full md:w-1/2 gap-4">
