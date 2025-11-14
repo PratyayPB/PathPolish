@@ -1,11 +1,12 @@
 import React from "react";
 import Logo from "../../assets/logo-pathpolish.png";
 import bg from "../../assets/background.png";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <footer
-      className="container mx-auto  py-12 px-50 bg-cover bg-center bg-[#f8f5f5] bg-blend-multiply"
+      className=" mx-auto  py-12 px-50 bg-cover bg-center bg-[#f8f5f5] bg-blend-multiply"
       style={{ backgroundImage: `url(${bg})` }}
     >
       {/* Newsletter Section */}
@@ -32,9 +33,11 @@ const Footer = () => {
               placeholder="Enter your email address"
               className="flex-1 min-w-[200px] p-2 border rounded border-gray-900 border-ac focus-outline-none"
             />
-            <button className="px-6 py-2 rounded-4xl bg-[#3E3651] text-white hover:bg-violet-800">
-              Subscribe
-            </button>
+            <Link to="/contact">
+              <button className="px-6 py-2 rounded-4xl bg-[#3E3651] text-white hover:bg-violet-800 cursor-pointer">
+                Subscribe
+              </button>
+            </Link>
           </div>
         </div>
       </div>

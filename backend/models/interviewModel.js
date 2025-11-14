@@ -13,24 +13,17 @@ const interviewQuestionSchema = new mongoose.Schema({
     ref: "InterviewType",
     required: true,
   },
-  question_text: { type: String, required: true },
+  type_name: { type: String, required: true },
+  question_text: { type: Array, required: true },
 });
 
-// export default mongoose.model("InterviewQuestion", interviewQuestionSchema);
+export const InterviewType = mongoose.model(
+  "InterviewType",
+  interviewTypeSchema
+);
+export const InterviewQuestion = mongoose.model(
+  "InterviewQuestion",
+  interviewQuestionSchema
+);
 
-const tempInterviewResponseSchema = new mongoose.Schema({
-  question_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "InterviewQuestion",
-    required: true,
-  },
-  user_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  response_text: { type: String, required: true },
-  timestamp: { type: Date, default: Date.now },
-});
-
-// export default mongoose.model("TempInterviewResponse", tempInterviewResponseSchema);
+//

@@ -15,7 +15,7 @@ const blogSchema = new mongoose.Schema(
     },
     author: {
       type: String,
-      required: true,
+      default: "Anonymous",
     },
     published_date: {
       type: Date,

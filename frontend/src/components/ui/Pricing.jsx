@@ -7,7 +7,7 @@ const Pricing = forwardRef((props, ref) => {
   const plans = [
     {
       name: "Basic",
-      price: billing === "monthly" ? "$99" : "$999",
+      price: billing === "monthly" ? "₹99" : "₹999",
       description:
         "Lorem ipsum dolor sit amet dolor siti conse ctetur adipiscing elit.",
       features: [
@@ -21,7 +21,7 @@ const Pricing = forwardRef((props, ref) => {
     },
     {
       name: "Growth",
-      price: billing === "monthly" ? "$199" : "$1,899",
+      price: billing === "monthly" ? "₹199" : "₹1,899",
       description:
         "Lorem ipsum dolor sit amet dolor siti conse ctetur adipiscing elit.",
       features: [
@@ -35,7 +35,7 @@ const Pricing = forwardRef((props, ref) => {
     },
     {
       name: "Enterprise",
-      price: billing === "monthly" ? "$399" : "$3,899",
+      price: billing === "monthly" ? "₹399" : "₹3,899",
       description:
         "Lorem ipsum dolor sit amet dolor siti conse ctetur adipiscing elit.",
       features: [
@@ -50,7 +50,11 @@ const Pricing = forwardRef((props, ref) => {
   ];
 
   return (
-    <section ref={ref} id="pricing" className="py-20  scroll-mt-20">
+    <section
+      ref={ref}
+      id="pricing"
+      className="py-20  scroll-mt-20 bg-gray-400/50"
+    >
       <div className="max-w-6xl mx-auto px-6 text-center">
         {/* Header */}
         <div className="mb-12">
@@ -72,8 +76,8 @@ const Pricing = forwardRef((props, ref) => {
             onClick={() => setBilling("monthly")}
             className={`px-6 py-2 rounded-full text-sm font-medium transition  ${
               billing === "monthly"
-                ? "bg-[#3E3651] text-white hover:bg-violet-800"
-                : "bg-white text-[#3E3651] border border-gray-200"
+                ? "bg-[#3E3651] text-white "
+                : "bg-white text-[#3E3651] border border-gray-200 hover:bg-gray-200"
             }`}
           >
             Monthly plan
@@ -83,7 +87,7 @@ const Pricing = forwardRef((props, ref) => {
             className={`px-6 py-2 rounded-full text-sm font-medium transition ${
               billing === "annual"
                 ? "bg-[#3E3651] text-white"
-                : "bg-white text-[#3E3651] hover:bg-violet-800 border border-gray-200"
+                : "bg-white text-[#3E3651]  border border-gray-200 hover:bg-gray-200"
             }`}
           >
             Annual plan

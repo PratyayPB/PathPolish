@@ -1,4 +1,5 @@
 import React from "react";
+import heroImage from "../../assets/highlightsHero.jpg";
 
 const cards = [
   {
@@ -29,28 +30,11 @@ export default function Highlights() {
     <section className="py-25 px-4" aria-labelledby="highlights-heading">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-center py-10">
         <div className="space-y-4">
-          <div className="w-11 h-11 flex items-center justify-center bg-white rounded-md shadow-sm">
-            <svg
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="1.5"
-                y="1.5"
-                width="21"
-                height="21"
-                rx="4"
-                stroke="#E3E7EE"
-                strokeWidth="1.2"
-                fill="#FAFBFD"
-              />
-              <circle cx="8.5" cy="8.5" r="1.6" fill="#8F96A8" />
-              <path d="M4 17l4.5-6 3.5 4.5L16 11l4 6H4z" fill="#CED6E6" />
-            </svg>
-          </div>
+          <img
+            src={heroImage}
+            alt="Highlights Hero Image"
+            className="w-5/7 rounded-3xl"
+          />
 
           <h2
             id="highlights-heading"

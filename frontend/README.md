@@ -17,4 +17,4 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## About the site
 
-## DEPENDENCIES: vite,react-router-dom,tailwind,npm install -D @tailwindcss/typography,react-markdown
+## DEPENDENCIES: vite,react-router-dom,tailwind,npm install -D @tailwindcss/typography,react-markdown,mermaid

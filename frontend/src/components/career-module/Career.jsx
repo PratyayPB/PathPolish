@@ -3,18 +3,19 @@ import React from "react";
 import HeroTemplate from "../ui/HeroTemplate2";
 import Features from "../ui/Features";
 import CareerAssessmentForm from "../ui/CareerAssessmentForm";
-
-import placeholderImage from "../../assets/img-placeholder.png";
+import Testimonials from "../ui/Testimonials";
+import bg from "../../assets/bgLong.png";
+import HeroImage from "../../assets/careerGuideHero.jpg";
 const Career = () => {
   return (
     <div>
       <HeroTemplate
-        title="Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+        title="Lorem ipsum dolor sit amet."
         // Prop for the p
-        subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores tenetur perferendis dolores, dicta fugit molestias quisquam sed facilis pariatur sint odit, delectus iste."
+        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores tenetur perferendis dolores, dicta fugit molestias quisquam sed facilis pariatur sint odit, delectus iste."
         // Prop for the image
         image={{
-          src: placeholderImage,
+          src: HeroImage,
           alt: "A descriptive alt text for the image",
         }}
         // Prop for the buttons
@@ -25,8 +26,14 @@ const Career = () => {
           </>
         }
       />
-      <CareerAssessmentForm />
-      <Features />
+      <div
+        className="bg-center bg-cover"
+        style={{ backgroundImage: `url(${bg})` }}
+      >
+        <CareerAssessmentForm />
+        <Features />
+        <Testimonials />
+      </div>
     </div>
   );
 };

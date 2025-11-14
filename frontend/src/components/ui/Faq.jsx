@@ -19,11 +19,11 @@ const faqsData = [
   },
 ];
 
-const tabs = ["General", "Billing", "Support", "Product"];
+// const tabs = ["General", "Billing", "Support", "Product"];
 
 const Faq = () => {
   const [openIndex, setOpenIndex] = useState(null);
-  const [activeTab, setActiveTab] = useState(tabs[0]);
+  // const [activeTab, setActiveTab] = useState(tabs[0]);
 
   const toggle = (i) => {
     setOpenIndex((prev) => (prev === i ? null : i));
@@ -43,7 +43,7 @@ const Faq = () => {
           </p>
 
           {/* Tabs / categories */}
-          <nav className="w-full mt-8">
+          {/* <nav className="w-full mt-8">
             <ul className="flex justify-center gap-8 border-b">
               {tabs.map((t) => (
                 <li
@@ -57,7 +57,7 @@ const Faq = () => {
                 </li>
               ))}
             </ul>
-          </nav>
+          </nav> */}
         </div>
 
         {/* FAQ list — center column spans */}

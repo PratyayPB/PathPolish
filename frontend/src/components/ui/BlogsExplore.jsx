@@ -1,54 +1,45 @@
-import React from "react";
-import BlogCard from "./BlogCard";
-import ChevronDown from "../../assets/icons/chevron-down.svg";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import BlogCard from "../ui/BlogCard";
+
 const BlogsExplore = () => {
-  const blogs = [
-    {
-      title: "Typography in web design: Enhancing UI/UX web apps",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipiscing eli mattis sit phasellus mollis sit aliquam sit nullam neque ultrices.",
-      category: "Design",
-      date: "Jan 24, 2024",
-    },
-    {
-      title: "Responsive design: Cross-device experience",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipiscing eli mattis sit phasellus mollis sit aliquam sit nullam neque ultrices.",
-      category: "Frontend",
-      date: "Jan 22, 2024",
-    },
-    {
-      title: "Web design best practices: Optimizing speed",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipiscing eli mattis sit phasellus mollis sit aliquam sit nullam neque ultrices.",
-      category: "Performance",
-      date: "Jan 20, 2024",
-    },
-    {
-      title: "User-Centric web design: Strategies for better UI/UX",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipiscing eli mattis sit phasellus mollis sit aliquam sit nullam neque ultrices.",
-      category: "UX",
-      date: "Jan 18, 2024",
-    },
-    {
-      title: "Web design trends 2023: Stay ahead of the curve",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipiscing eli mattis sit phasellus mollis sit aliquam sit nullam neque ultrices.",
-      category: "Trends",
-      date: "Jan 16, 2024",
-    },
-    {
-      title: "Inclusive design: Accessible websites for all users",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipiscing eli mattis sit phasellus mollis sit aliquam sit nullam neque ultrices.",
-      category: "Accessibility",
-      date: "Jan 14, 2024",
-    },
-  ];
+  const [blogs, setBlogs] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(15);
+
+  const handleShowMore = () => {
+    setVisibleCount((prev) => prev + 6);
+  };
+
+  const slugify = (title) =>
+    title
+      .toLowerCase()
+      .trim()
+      .replace(/ /g, "-")
+      .replace(/[^\w-]+/g, "");
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/blogs");
+
+        // Add slug to each blog
+        const updatedBlogs = response.data.map((blog) => ({
+          ...blog,
+          slug: slugify(blog.title),
+        }));
+
+        setBlogs(updatedBlogs);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16 px-6 flex flex-col items-center gap-4">
+    <div className="min-h-screen bg-gray-50 pt-16 px-6 flex flex-col items-center gap-4 rounded-2xl">
       <div className="max-w-6xl mx-auto text-center mb-12">
         <h2 className="text-3xl font-bold text-gray-800 mb-2">
           Explore Our Latest Blogs
@@ -59,15 +50,22 @@ const BlogsExplore = () => {
         </p>
       </div>
 
-      {/* Blog Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-        {blogs.map((blog, index) => (
-          <BlogCard key={index} {...blog} />
-        ))}
+      <div className="flex flex-col items-center gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+          {blogs.slice(0, visibleCount).map((blog) => (
+            <BlogCard {...blog} />
+          ))}
+        </div>
+
+        {visibleCount < blogs.length && (
+          <button
+            onClick={handleShowMore}
+            className="px-6 py-2 my-4 cursor-pointer border border-gray-400 rounded-md hover:bg-gray-100 transition"
+          >
+            Show More
+          </button>
+        )}
       </div>
-      <span className="flex gap-1 items-center py-6">
-        Show More <img src={ChevronDown} alt="" width={20} />
-      </span>
     </div>
   );
 };

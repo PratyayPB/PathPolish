@@ -17,8 +17,9 @@ const HeroTemplate = ({ title, subtitle, image, actions }) => {
       {/* This is the main layout structure. 
         We keep the layout classes here.
       */}
+
       <div
-        className="container h-[90vh] flex justify-around items-center gap-2 pb-20 bg-cover bg-center "
+        className="h-[90vh] flex justify-around items-center gap-2 pb-20 bg-cover bg-center px-10"
         style={{ backgroundImage: `url(${bg})` }}
       >
         <div className="hero-content w-3/5 ">
@@ -44,10 +45,12 @@ const HeroTemplate = ({ title, subtitle, image, actions }) => {
         </div>
 
         {/* 4. Image goes here */}
-        <div className="hero-image w-2/5 ">
+        <div className="hero-image w-2/5  ">
           {" "}
           {/* Assuming h-f meant h-full */}
-          {image && <img src={image.src} alt={image.alt} />}
+          {image && (
+            <img src={image.src} alt={image.alt} className="rounded-3xl" />
+          )}
         </div>
       </div>
     </>

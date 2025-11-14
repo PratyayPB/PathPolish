@@ -1,17 +1,30 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import HeroTemplate from "../ui/HeroTemplate";
 import Features from "../ui/Features";
 import About from "../ui/About";
 import Pricing from "../ui/Pricing";
 import Highlights from "../ui/Highlights";
 import Faq from "../ui/Faq";
-import placeholderImage from "../../assets/img-placeholder.png";
 import bg from "../../assets/bgLong.png";
-
+import heroImage from "../../assets/landingPageHero.jpg";
+import Login from "../authentication/Login";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 const Landingpage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
-
+  const handleSectionNavigation = (sectionId) => {
+    if (location.pathname !== "/") {
+      // If not on home page, navigate home first then scroll
+      // mark that navigation came from the header so landing page only
+      // performs the scroll when intended by user interaction
+      navigate("/", { state: { fromHeader: true, scrollTo: sectionId } });
+    } else {
+      // If already on home page, just scroll
+      document
+        .getElementById(sectionId)
+        ?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   useEffect(() => {
     // Only trigger when navigation explicitly came from the Header
     // (Header sets { fromHeader: true, scrollTo: '<id>' }). This
@@ -51,22 +64,28 @@ const Landingpage = () => {
         subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores tenetur perferendis dolores, dicta fugit molestias quisquam sed facilis pariatur sint odit, delectus iste."
         // Prop for the image
         image={{
-          src: placeholderImage,
+          src: heroImage,
           alt: "A descriptive alt text for the image",
         }}
         // Prop for the buttons
         actions={
           <>
-            <button className="bg-[#3E3651] text-white rounded-4xl px-6 py-4 hover:bg-violet-800 cursor-pointer">
+            <button
+              className="bg-[#3E3651] font-semibold text-white rounded-4xl px-6 py-4 hover:bg-violet-800 cursor-pointer hover:scale-105"
+              onClick={() => handleSectionNavigation("features")}
+            >
               Explore
             </button>
-            <button className="bg-[#3E3651] text-white rounded-4xl px-6 py-4 hover:bg-violet-800 cursor-pointer">
-              Get Started
-            </button>
+
+            <Link to="/login">
+              <button className="bg-[#3E3651] text-white rounded-4xl px-6 py-4 hover:bg-violet-800 cursor-pointer font-semibold hover:scale-105">
+                Get Started
+              </button>
+            </Link>
           </>
         }
       />
-      {/* <Hero /> */}
+
       <div
         className="bg-cover bg-center"
         style={{ backgroundImage: `url(${bg})` }}

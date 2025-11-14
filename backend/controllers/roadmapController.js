@@ -2,6 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 // import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
 import mermaid from "mermaid";
 import dotenv from "dotenv";
+import Roadmap from "../models/roadmapModel.js";
 dotenv.config();
 const GenAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = GenAI.getGenerativeModel({ model: "gemini-2.5-flash" });
@@ -40,33 +41,65 @@ Structure the chart for clear visual progression from beginner to advanced.
 //calls the mermaid api with the ai generated mermaid code to get the svg diagram
 
 //returns the svg diagram
-async function mermaidToSvg(mermaidCode) {
-  if (typeof mermaidCode !== "string") {
-    console.error("Invalid Mermaid input type:", typeof mermaidCode);
-    throw new Error("Mermaid code must be a string");
-  }
-  try {
-    const { svg } = await mermaid.render("graphDiv", mermaidCode);
-    console.log("Generated SVG:");
-    return svg;
-  } catch (error) {
-    console.error("Error converting Mermaid code to SVG:", error);
-    return null;
-  }
-}
+
+//mermaidToSVG needs to be in frontend!!!
+
 const generateRoadmap = async (req, res) => {
   const { role, duration } = req.body;
-  const mermaidCode = await generateMermaidCode(role, duration);
-  if (!mermaidCode) {
-    console.error("Failed to generate Mermaid code.");
-    return;
+  try {
+    //  Check if roadmap already exists
+    const existingRoadmap = await Roadmap.findOne({ role, duration });
+
+    if (existingRoadmap) {
+      console.log("✅ Roadmap fetched from DB — no AI call needed.");
+
+      return res.status(200).json({
+        success: true,
+        mermaidCode: existingRoadmap.mermaidCode,
+        fromDatabase: true,
+      });
+    }
+
+    const mermaidCode = await generateMermaidCode(role, duration);
+
+    if (!mermaidCode) {
+      console.error("❌ Failed to generate Mermaid code.");
+      return res
+        .status(500)
+        .json({ success: false, message: "Generation failed." });
+    }
+
+    // Store newly generated roadmap in DB
+    const saved = await Roadmap.create({
+      role,
+      duration,
+      mermaidCode,
+    });
+
+    console.log("New Roadmap stored in DB:", saved._id);
+
+    // 4) Send response to frontend
+    return res.status(200).json({
+      success: true,
+      mermaidCode,
+      fromDatabase: false,
+    });
+  } catch (error) {
+    console.error("❌ Error generating roadmap:", error);
+    return res.status(500).json({ success: false, message: "Server error." });
   }
-  console.log("Generated Mermaid Code:", mermaidCode);
-  const svg = await mermaidToSvg(mermaidCode);
-  if (svg) {
-    console.log("Generated SVG:");
-    return res.status(200).json({ success: true });
-  }
+  // const mermaidCode = await generateMermaidCode(role, duration);
+  // if (!mermaidCode) {
+  //   console.error("Failed to generate Mermaid code.");
+  //   return;
+  // }
+  // console.log("Generated Mermaid Code:", mermaidCode);
+  // return res.status(200).json({ success: true, mermaidCode });
+  // // const svg = await mermaidToSvg(mermaidCode);
+  // // if (svg) {
+  // //   console.log("Generated SVG:");
+  // //   return res.status(200).json({ success: true, svg });
+  // // }
 };
 
 export default generateRoadmap;

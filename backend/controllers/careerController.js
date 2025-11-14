@@ -16,6 +16,7 @@ const getGuide = async (req, res) => {
       experience,
       currentRole,
       industry,
+      country,
     } = req.body;
 
     if (
@@ -26,7 +27,8 @@ const getGuide = async (req, res) => {
       !goals ||
       !experience ||
       !currentRole ||
-      !industry
+      !industry ||
+      !country
     )
       return res.status(400).json({ message: "Enter all the fields" });
 
@@ -40,6 +42,7 @@ const getGuide = async (req, res) => {
       - Experience: ${experience}
       - Current Role: ${currentRole}
       - Industry: ${industry}
+      - Country: ${country}
       
       
       Based on this information, suggest:
@@ -48,7 +51,7 @@ const getGuide = async (req, res) => {
       3. Relevant resources(e.g., books, online courses or certification programmes for skill development) to pursue along with the links.
       4. Potential alternative career paths (if applicable).
       
-      Keep the advice personalized, practical, and encouraging.Keep the response within 200 words start with hello {name} and keep it simple and precise
+      Keep the advice personalized, practical, and encouraging.Keep the response within 200 words start with hello {name} and keep it simple and precise 
       
         `;
 

@@ -1,17 +1,19 @@
 import React from "react";
 import HeroTemplate from "../ui/HeroTemplate2";
 import Features from "../ui/Features";
-import placeholderImage from "../../assets/img-placeholder.png";
+import HeroImage from "../../assets/roadmapHero.jpg";
 import RoadmapForm from "../ui/RoadmapForm";
+import Testimonials from "../ui/Testimonials";
+import bg from "../../assets/bgLong.png";
 
 const Roadmap = () => {
   return (
     <div>
       <HeroTemplate
-        title="Lorem ipsum dolor sit amet, consectetur adipisicing elit."
-        subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores tenetur perferendis dolores, dicta fugit molestias quisquam sed facilis pariatur sint odit, delectus iste."
+        title="Lorem ipsum dolor sit amet."
+        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores tenetur perferendis dolores, dicta fugit molestias quisquam sed facilis pariatur sint odit, delectus iste."
         image={{
-          src: placeholderImage,
+          src: HeroImage,
           alt: "A descriptive alt text for the image",
         }}
         actions={
@@ -21,9 +23,14 @@ const Roadmap = () => {
           </>
         }
       />
-      <RoadmapForm />
-
-      <Features />
+      <div
+        className="bg-cover bg-center"
+        style={{ backgroundImage: `url(${bg})` }}
+      >
+        <RoadmapForm />
+        <Features />
+        <Testimonials />
+      </div>
     </div>
   );
 };

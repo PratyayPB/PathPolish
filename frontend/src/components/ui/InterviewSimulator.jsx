@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Play, RotateCcw } from "lucide-react";
 import axios from "axios";
-import ReactMarkdown from "react-markdown";
+
 import FeedbackDisplay from "./InterviewFeedbackDisplay";
+import { useParams } from "react-router-dom";
 
 // Assuming you have imported axios, Play, and RotateCcw
 // import axios from 'axios';
@@ -16,17 +17,25 @@ const InterviewSimulator = () => {
   const [error, setError] = useState("");
   const [responses, setResponses] = useState([]);
   const [feedback, setFeedback] = useState(null);
+  const { typeName } = useParams();
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/interview/questions"
+          `http://localhost:5000/api/interview/questions/${typeName}`
         );
+        setQuestions(response.data[0].question_text);
+        console.log(response.data[0].question_text);
+
         // 3. SIMPLIFIED FETCH LOGIC: Set the fetched array directly
-        setQuestions(response.data.questions);
+
         setLoading(false);
       } catch (error) {
+        if (error.response && error.response.status === 401) {
+          alert("Please log in to use this feature.");
+          window.location.href = "/login";
+        }
         console.error(error);
         setError("Failed to fetch questions");
         setLoading(false);
@@ -34,7 +43,7 @@ const InterviewSimulator = () => {
     };
 
     fetchQuestions();
-  }, []);
+  }, [typeName]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
@@ -98,10 +107,21 @@ const InterviewSimulator = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f4f8ff] to-[#e6eefc] pt-30 px-6">
+    <div className="min-h-screen  pt-30 px-6">
       {feedback ? (
         // 🌟 SHOW FEEDBACK DISPLAY 🌟
-        <FeedbackDisplay feedbackString={feedback} />
+        <div className="flex flex-col items-center justify-center">
+          <FeedbackDisplay feedbackString={feedback} />
+          <button
+            className="bg-[#3E3651] text-white px-6 py-2 rounded-3xl hover:bg-violet-800 my-5 cursor-pointer"
+            onClick={() => {
+              setFeedback(null);
+              handleReset();
+            }}
+          >
+            Back
+          </button>
+        </div>
       ) : (
         <div className="max-w-4xl mx-auto bg-white/70 backdrop-blur-sm p-8 rounded-2xl shadow-sm">
           <h1 className="text-3xl font-bold text-center mb-2">
@@ -145,7 +165,7 @@ const InterviewSimulator = () => {
             </div>
 
             {/* Controls */}
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center px-20">
               <button
                 onClick={handlePrevious}
                 disabled={questionIndex === 0}
@@ -153,18 +173,6 @@ const InterviewSimulator = () => {
               >
                 Previous Question
               </button>
-
-              <div className="flex gap-3 items-center">
-                <button className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-md font-medium hover:bg-gray-900 transition-all">
-                  <Play size={16} /> Start Recording
-                </button>
-                <button
-                  onClick={handleReset}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded-md font-medium hover:bg-gray-200 transition-all"
-                >
-                  <RotateCcw size={16} /> Reset
-                </button>
-              </div>
 
               {/* Conditional Next/Submit button logic is unchanged and still works! */}
               {questionIndex === currentQuestions.length - 1 &&

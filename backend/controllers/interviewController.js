@@ -1,21 +1,61 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
+import { InterviewType, InterviewQuestion } from "../models/interviewModel.js";
 dotenv.config();
 
 const geminiAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const geminiModel = geminiAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-// Static interview questions
-const questions = [
-  "Tell me about yourself.",
-  "What are your strengths and weaknesses?",
-  "Where do you see yourself in the next five years?",
-];
+const createInterviewType = async (req, res) => {
+  try {
+    const { type_name, description } = req.body;
+
+    if (!type_name || !description)
+      return res.status(400).json({ message: "Enter all the fields" });
+
+    const interviewType = await InterviewType.create({
+      type_name,
+      description,
+    });
+
+    return res.status(201).json({ interviewType });
+  } catch (error) {
+    console.error("Error creating interview type:", error);
+    return res.status(500).json({ message: "Error creating interview type" });
+  }
+};
+
+const createInterviewQuestion = async (req, res) => {
+  try {
+    const { type_name, question_text } = req.body;
+    if (!type_name || !question_text)
+      return res.status(400).json({ message: "Enter all the fields" });
+
+    const type = await InterviewType.findOne({ type_name });
+    if (!type) {
+      return res.status(400).json({ message: "Couldn't find type" });
+    }
+
+    const interviewQuestion = await InterviewQuestion.create({
+      interview_type_id: type._id,
+      type_name,
+      question_text,
+    });
+
+    return res.status(201).json({ interviewQuestion });
+  } catch (error) {
+    console.error("Error creating interview question:", error);
+    return res
+      .status(500)
+      .json({ message: "Error creating interview question" });
+  }
+};
 
 /**
  * GET /interview/questions
  * Sends the list of interview questions to the frontend
  */
+
 const getInterviewQuestions = (req, res) => {
   console.log("Sending interview questions to frontend...");
   return res.status(200).json({ questions });
@@ -67,74 +107,9 @@ const getInterviewFeedback = async (req, res) => {
   }
 };
 
-export { getInterviewQuestions, getInterviewFeedback };
-
-// const questions = [
-//   "Tell me about yourself.",
-//   "What are your strengths and weaknesses?",
-//   "Where do you see yourself in the next five years?",
-// ];
-
-// const rl = readline.createInterface({
-//   input: process.stdin,
-//   output: process.stdout,
-// });
-
-// const responseCollection = [];
-
-// Ask questions recursively
-// async function askQuestion(index = 0) {
-//   if (index >= questions.length) {
-//     console.log(
-//       "\nInterview complete. Sending responses to AI for feedback...\n"
-//     );
-//     await getFeedback();
-//     rl.close();
-//     return;
-//   }
-
-//   rl.question(`${questions[index]}\n> `, async (answer) => {
-//     responseCollection.push({
-//       question: questions[index],
-//       response: answer,
-//     });
-//     await askQuestion(index + 1);
-//   });
-// }
-
-// // Build prompt and get feedback from model
-// const prompt = `You are an HR interviewer. Analyze the following candidate's interview responses and provide constructive feedback in three short sections:\n1) Strengths\n2) Areas for improvement\n3) Overall concise impression\n\nCandidate responses:\n${JSON.stringify(
-//   responseCollection,
-//   null,
-//   2
-// )}\n\nKeep the response concise and actionable.`;
-
-// const result = await geminiModel.generateContent(prompt);
-// const feedback = await result.response.text();
-// return feedback;
-
-//frontend flow
-
-{
-  /*
-const res = await fetch("/interview/questions");
-const data = await res.json();
-const questions = data.questions;
-
-// Step 2: Display questions and collect responses
-const responses = questions.map((q) => ({
-  question: q,
-  response: prompt(q), // replace with form input collection
-}));
-
-// Step 3: Send responses to backend
-const feedbackRes = await fetch("/interview/feedback", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ responses }),
-});
-
-const feedbackData = await feedbackRes.json();
-console.log("AI Feedback:", feedbackData.feedback);
-  */
-}
+export {
+  getInterviewQuestions,
+  getInterviewFeedback,
+  createInterviewType,
+  createInterviewQuestion,
+};
