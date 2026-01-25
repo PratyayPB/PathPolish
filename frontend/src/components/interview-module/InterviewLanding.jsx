@@ -13,16 +13,26 @@ const Interview = () => {
       <HeroTemplate
         image={{
           src: HeroImage,
-          alt: "A descriptive alt text for the image",
+          alt: "Interview preparation session",
         }}
-        title="Lorem ipsum dolor sit amet."
-        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores tenetur perferendis dolores, dicta fugit molestias quisquam sed facilis pariatur sint odit, delectus iste."
+        title="Ace Your Next Interview"
+        description="Practice with our AI-powered interview simulator. Choose from behavioral, technical, or case study interviews and get instant, actionable feedback to improve your performance."
+        actions={
+          <button 
+            onClick={() => document.getElementById('interview-simulator')?.scrollIntoView({ behavior: 'smooth' })}
+            className="bg-[#3E3651] text-white px-6 py-3 rounded-full hover:bg-violet-800 transition shadow-lg cursor-pointer"
+          >
+            Start Practice
+          </button>
+        }
       />
       <div
         className="bg-cover bg-center"
         style={{ backgroundImage: `url(${bg})` }}
       >
-        <InterviewTypePage />
+        <div id="interview-simulator" className="scroll-mt-20">
+          <InterviewTypePage />
+        </div>
         <Features />
         <Testimonials />
       </div>

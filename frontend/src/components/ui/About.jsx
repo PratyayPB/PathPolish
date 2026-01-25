@@ -13,13 +13,15 @@ const About = forwardRef((props, ref) => {
             About PathPolish
           </h2>
           <p className="text-white body-font leading-relaxed">
-            By creating a visual guide along the way, the designer or developer
-            can get input from the other people involved in the website such as
-            the customer, their manager, and other members of the team.
+            PathPolish is a career guidance platform designed to bring clarity
+            to your professional journey. It provides structured career
+            roadmaps, curated learning resources, interview preparation
+            guidance, and AI-powered insights tailored to individual goals.
           </p>
           <p className="text-white body-font leading-relaxed">
-            The visual guide will provide a view to the customer of what their
-            website or project will end up looking like.
+            Whether you are a student or an early professional, PathPolish helps
+            you make informed decisions, track progress, and move confidently
+            toward your desired career path.
           </p>
 
           {/* <Link to="/contact">

@@ -39,25 +39,25 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
       {/* Left Section */}
       <div
-        className="w-1/2 bg-blue-200 flex flex-col justify-center gap-10 items-start  px-20 "
+        className="w-full md:w-1/2 bg-blue-200 flex flex-col justify-center gap-10 items-start px-6 md:px-20 py-10 md:py-0"
         style={{ backgroundImage: `url(${BgImage})` }}
       >
-        <h2 className="text-4xl font-semibold text-white leading-snug  title-font">
-          Need web design for your business? <br />
-          <span className="font-extrabold text-[#3E3651] text-5xl">
+        <h2 className="text-3xl md:text-4xl font-semibold text-white leading-snug title-font">
+          Login to <br />
+          <span className="font-extrabold text-[#3E3651] text-4xl md:text-5xl">
             PathPolish
           </span>{" "}
-          will help you.
+          to unlock your full potential.
         </h2>
         <div className="text-center ">
           {/* <div className="bg-blue-600 text-white rounded-3xl h-48 w-48 flex justify-center items-center text-8xl font-bold shadow-lg">
             P
           </div> */}
           <Link to="/">
-            <img src={Logo} alt="" className="w-48" />
+            <img src={Logo} alt="" className="w-32 md:w-48" />
 
             <p className=" mt-2 font-bold text-sm opacity-90 body-text text-[#3E3651]">
               pathpolish.com
@@ -68,7 +68,7 @@ const Login = () => {
       {/* Right Section */}
       {/* Right Section */}
 
-      <div className="w-1/2 flex flex-col justify-center items-center px-20 ">
+      <div className="w-full md:w-1/2 flex flex-col justify-center items-center px-6 md:px-20 py-10 md:py-0">
         <h1 className="text-2xl font-semibold mb-8 body-font">Sign In</h1>
 
         <form className="w-full max-w-md space-y-4 " onSubmit={handleLogin}>
@@ -77,14 +77,14 @@ const Login = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border-b border-gray-300 focus:outline-none py-2"
+            className="w-full border-b border-gray-300 focus:outline-none py-3 md:py-2"
           />
 
           <div className="relative w-full">
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              className="w-full border-b border-gray-300 focus:outline-none py-2 pr-10"
+              className="w-full border-b border-gray-300 focus:outline-none py-3 md:py-2 pr-10"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

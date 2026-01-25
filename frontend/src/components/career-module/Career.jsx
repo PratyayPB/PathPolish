@@ -10,19 +10,24 @@ const Career = () => {
   return (
     <div>
       <HeroTemplate
-        title="Lorem ipsum dolor sit amet."
+        title="Uncover Your True Potential"
         // Prop for the p
-        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores tenetur perferendis dolores, dicta fugit molestias quisquam sed facilis pariatur sint odit, delectus iste."
+        description="Take our comprehensive career assessment to find the perfect role that aligns with your skills, interests, and aspirations. Get a detailed report and recommended learning paths."
         // Prop for the image
         image={{
           src: HeroImage,
-          alt: "A descriptive alt text for the image",
+          alt: "Person analyzing career options",
         }}
         // Prop for the buttons
         actions={
           <>
-            <button className="bg-gray-200 p-3">Explore</button>
-            <button className="bg-gray-200 p-3">Get Started</button>
+            <button 
+              onClick={() => document.getElementById('career-assessment')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-[#3E3651] text-white px-6 py-3 rounded-full hover:bg-violet-800 transition shadow-lg cursor-pointer"
+            >
+              Start Assessment
+            </button>
+           
           </>
         }
       />
@@ -30,7 +35,9 @@ const Career = () => {
         className="bg-center bg-cover"
         style={{ backgroundImage: `url(${bg})` }}
       >
-        <CareerAssessmentForm />
+        <div id="career-assessment" className="scroll-mt-20">
+          <CareerAssessmentForm />
+        </div>
         <Features />
         <Testimonials />
       </div>

@@ -46,7 +46,7 @@ const Landingpage = () => {
             document.title,
             window.location.pathname +
               window.location.search +
-              window.location.hash
+              window.location.hash,
           );
         } catch {
           // ignore if replaceState not allowed
@@ -59,9 +59,9 @@ const Landingpage = () => {
   return (
     <div>
       <HeroTemplate // Prop for the h1
-        title="Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+        title="Polish your path. Build your career with clarity."
         // Prop for the p
-        subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores tenetur perferendis dolores, dicta fugit molestias quisquam sed facilis pariatur sint odit, delectus iste."
+        subtitle="PathPolish helps you navigate your career with structured roadmaps, curated resources, and AI-powered guidance—so you always know what to learn next and how to move forward with confidence."
         // Prop for the image
         image={{
           src: heroImage,

@@ -10,16 +10,21 @@ const Roadmap = () => {
   return (
     <div>
       <HeroTemplate
-        title="Lorem ipsum dolor sit amet."
-        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores tenetur perferendis dolores, dicta fugit molestias quisquam sed facilis pariatur sint odit, delectus iste."
+        title="Chart Your Course to Mastery"
+        description="Generate personalized, step-by-step learning roadmaps for any tech stack or role. Track your progress, access curated resources, and achieve your learning goals efficiently."
         image={{
           src: HeroImage,
-          alt: "A descriptive alt text for the image",
+          alt: "Roadmap visualization",
         }}
         actions={
           <>
-            <button className="bg-gray-2    00 p-3">Explore</button>
-            <button className="bg-gray-200 p-3">Get Started</button>
+            <button 
+              onClick={() => document.getElementById('roadmap-generator')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-[#3E3651] text-white px-6 py-3 rounded-full hover:bg-violet-800 transition shadow-lg cursor-pointer"
+            >
+              Create Roadmap
+            </button>
+            
           </>
         }
       />
@@ -27,7 +32,9 @@ const Roadmap = () => {
         className="bg-cover bg-center"
         style={{ backgroundImage: `url(${bg})` }}
       >
-        <RoadmapForm />
+        <div id="roadmap-generator" className="scroll-mt-20">
+          <RoadmapForm />
+        </div>
         <Features />
         <Testimonials />
       </div>

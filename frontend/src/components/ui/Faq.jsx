@@ -2,20 +2,20 @@ import React, { useState } from "react";
 
 const faqsData = [
   {
-    q: "How long does a web design project take?",
-    a: "Project length depends on scope. A simple brochure site can take a few weeks; a larger custom site with integrations can take several months. We define milestones and keep communication open throughout.",
+    q: "How does the roadmap generator work?",
+    a: "Our AI analyzes your career goals and current skills to create a personalized step-by-step learning path. It breaks down complex topics into manageable modules with curated resources.",
   },
   {
-    q: "What factors affect the cost of web design?",
-    a: "Costs depend on design complexity, number of pages, custom functionality, integrations (payments, CMS, APIs), and content creation. Ongoing maintenance and hosting are additional factors.",
+    q: "Is the interview simulator effective?",
+    a: "Yes! Our simulator uses advanced AI to mimic real interview scenarios. You get instant feedback on your answers, communication style, and technical accuracy to help you improve.",
   },
   {
-    q: "Do you provide ongoing support?",
-    a: "Yes — we offer maintenance and support plans to keep your site secure, up to date, and to add incremental improvements over time.",
+    q: "Can I access PathPolish on mobile?",
+    a: "Absolutely. PathPolish is fully responsive and optimized for mobile devices, so you can learn and practice on the go.",
   },
   {
-    q: "What is your web design process?",
-    a: "Our process typically includes discovery, wireframes, visual design, development, testing, and launch. We collaborate closely at each step to make sure the outcome meets goals.",
+    q: "Do you offer mentorship?",
+    a: "Yes, our Premium plan includes 1-on-1 mentorship sessions with industry experts who can guide you through your career challenges.",
   },
 ];
 
@@ -38,8 +38,7 @@ const Faq = () => {
             Frequently Asked Questions
           </h2>
           <p className="mt-4 max-w-2xl text-center body-font font-medium text-white">
-            Lorem ipsum dolor sit amet consectetur adipisicing eli mattis sit
-            phasellus mollis sit aliquam sit nullam.
+            Everything you need to know about PathPolish and how we help you succeed.
           </p>
 
           {/* Tabs / categories */}

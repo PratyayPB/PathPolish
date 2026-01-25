@@ -6,44 +6,44 @@ const Pricing = forwardRef((props, ref) => {
 
   const plans = [
     {
-      name: "Basic",
-      price: billing === "monthly" ? "₹99" : "₹999",
+      name: "Starter",
+      price: billing === "monthly" ? "₹0" : "₹0",
       description:
-        "Lorem ipsum dolor sit amet dolor siti conse ctetur adipiscing elit.",
+        "Perfect for students and beginners starting their journey.",
       features: [
-        "All analytics features",
-        "Up to 250,000 tracked visits",
-        "Normal support",
-        "Mobile app",
-        "Up to 3 team members",
+        "Access to basic roadmaps",
+        "Community support",
+        "Limited interview questions",
+        "Basic career assessment",
+        "Blog access",
       ],
       popular: false,
     },
     {
-      name: "Growth",
-      price: billing === "monthly" ? "₹199" : "₹1,899",
+      name: "Pro",
+      price: billing === "monthly" ? "₹499" : "₹4,999",
       description:
-        "Lorem ipsum dolor sit amet dolor siti conse ctetur adipiscing elit.",
+        "For serious job seekers who want to accelerate their career.",
       features: [
-        "Everything on Basic plan",
-        "Up to 1,000,000 tracked visits",
-        "Premium support",
-        "Mobile app",
-        "Up to 10 team members",
+        "Everything in Starter",
+        "Unlimited roadmap generation",
+        "AI Interview Simulator (10/mo)",
+        "Resume analysis tool",
+        "Priority support",
       ],
       popular: true,
     },
     {
-      name: "Enterprise",
-      price: billing === "monthly" ? "₹399" : "₹3,899",
+      name: "Premium",
+      price: billing === "monthly" ? "₹999" : "₹9,999",
       description:
-        "Lorem ipsum dolor sit amet dolor siti conse ctetur adipiscing elit.",
+        "Comprehensive guidance for career transformation.",
       features: [
-        "Everything on Growth plan",
-        "Up to 5,000,000 tracked visits",
-        "Dedicated support",
-        "Mobile app",
-        "Up to 50 team members",
+        "Everything in Pro",
+        "Unlimited AI Interviews",
+        "1-on-1 Mentorship session",
+        "Personalized career strategy",
+        "Dedicated success manager",
       ],
       popular: false,
     },
@@ -65,8 +65,7 @@ const Pricing = forwardRef((props, ref) => {
             Affordable pricing plans
           </h2>
           <p className="text-white body-font leading-relaxed mt-4 max-w-2xl mx-auto">
-            Lorem ipsum dolor sit amet consectetur adipiscing elit tortor eu
-            egestas morbi sem vulputate etiam facilisis pellentesque ut quis.
+            Choose the perfect plan to unlock your potential. Upgrade anytime as your career grows.
           </p>
         </div>
 

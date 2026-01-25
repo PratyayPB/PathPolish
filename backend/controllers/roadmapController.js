@@ -31,19 +31,6 @@ Structure the chart for clear visual progression from beginner to advanced.
   return responseText;
 }
 
-// export default generateRoadmap;
-// export default generateMermaidCode;
-
-//fetches role and duration from the request body
-
-//calls aiRoadmapResponse with the role and duration to get the ai-generated roadmap
-
-//calls the mermaid api with the ai generated mermaid code to get the svg diagram
-
-//returns the svg diagram
-
-//mermaidToSVG needs to be in frontend!!!
-
 const generateRoadmap = async (req, res) => {
   const { role, duration } = req.body;
   try {
@@ -88,18 +75,6 @@ const generateRoadmap = async (req, res) => {
     console.error("❌ Error generating roadmap:", error);
     return res.status(500).json({ success: false, message: "Server error." });
   }
-  // const mermaidCode = await generateMermaidCode(role, duration);
-  // if (!mermaidCode) {
-  //   console.error("Failed to generate Mermaid code.");
-  //   return;
-  // }
-  // console.log("Generated Mermaid Code:", mermaidCode);
-  // return res.status(200).json({ success: true, mermaidCode });
-  // // const svg = await mermaidToSvg(mermaidCode);
-  // // if (svg) {
-  // //   console.log("Generated SVG:");
-  // //   return res.status(200).json({ success: true, svg });
-  // // }
 };
 
 export default generateRoadmap;

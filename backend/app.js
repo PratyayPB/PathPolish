@@ -152,12 +152,6 @@ function requireLogin(req, res, next) {
   next();
 }
 
-function requireAdmin(req, res, next) {
-  if (!req.session.adminId)
-    return res.status(401).json({ message: "Admin login required" });
-  next();
-}
-
 // PROTECTED ROUTE
 app.get("/dashboard", requireLogin, (req, res) => {
   res.json({ message: "Access granted", userId: req.session.userId });

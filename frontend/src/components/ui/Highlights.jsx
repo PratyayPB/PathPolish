@@ -3,25 +3,25 @@ import heroImage from "../../assets/highlightsHero.jpg";
 
 const cards = [
   {
-    stat: "200+",
-    title: "Websites build",
-    desc: "Lorem ipsum dolor sit amet consectetur adipiscing elit",
+    stat: "10k+",
+    title: "Users Empowered",
+    desc: "Helping students and professionals achieve their career goals.",
     featured: true,
   },
   {
-    stat: "99%",
-    title: "Client satisfaction",
-    desc: "Lorem ipsum dolor sit amet consectetur adipiscing elit",
+    stat: "95%",
+    title: "Success Rate",
+    desc: "Users reported feeling more confident after using our interview simulator.",
   },
   {
-    stat: "34+",
-    title: "Team members",
-    desc: "Lorem ipsum dolor sit amet consectetur adipiscing elit",
+    stat: "50k+",
+    title: "Roadmaps Generated",
+    desc: "Personalized learning paths created for various tech stacks.",
   },
   {
-    stat: "100+",
-    title: "Amazing clients",
-    desc: "Lorem ipsum dolor sit amet consectetur adipiscing elit",
+    stat: "500+",
+    title: "Expert Mentors",
+    desc: "Industry professionals ready to guide you on your journey.",
   },
 ];
 
@@ -44,8 +44,7 @@ export default function Highlights() {
           </h2>
 
           <p className="text-white body-font max-w-prose">
-            Lorem ipsum dolor sit amet consectetur nunc nunc sit velit eget
-            sollicitudin sit posuere augue vestibulum eget turpis lobortis donec
+            Our numbers speak for themselves. Join thousands of satisfied users who have transformed their careers with PathPolish.
           </p>
         </div>
 
