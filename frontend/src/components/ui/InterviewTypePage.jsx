@@ -1,41 +1,59 @@
 import React from "react";
 import InterviewTypeCard from "./InterviewTypeCard";
+import { useState ,useEffect} from "react";
+import axios from "axios";
+
 
 const InterviewTypePage = () => {
-  const interviewTypes = [
-    {
-      title: "Technical",
-      level: "Advanced",
-      description: "Practice coding problems and technical concepts",
-      duration: "45–60 min",
-      questions: "25 questions",
-      color: "blue",
-    },
-    {
-      title: "Behavioral",
-      level: "Intermediate",
-      description: "STAR method and soft skills assessment",
-      duration: "30–45 min",
-      questions: "15 questions",
-      color: "green",
-    },
-    {
-      title: "System Design",
-      level: "Expert",
-      description: "Architecture and scalability discussions",
-      duration: "60–90 min",
-      questions: "8 questions",
-      color: "red",
-    },
-    {
-      title: "Case Study",
-      level: "Advanced",
-      description: "Business scenarios and problem-solving",
-      duration: "45–60 min",
-      questions: "12 questions",
-      color: "purple",
-    },
-  ];
+  const [interviewTypes,setInterviewTypes]=useState([])
+
+  useEffect(() => {
+    const fetchInterviewTypes = async () => {
+      const response = await axios.get("http://localhost:5000/api/interview/types");
+      const data=response.data.data;
+      setInterviewTypes(data);
+    };
+    fetchInterviewTypes();
+
+  }, []);
+  console.log(interviewTypes);
+
+  
+
+  // const interviewTypes = [
+  //   {
+  //     title: "Technical",
+  //     level: "Advanced",
+  //     description: "Practice coding problems and technical concepts",
+  //     duration: "45–60 min",
+  //     questions: "25 questions",
+  //     color: "blue",
+  //   },
+  //   {
+  //     title: "Behavioral",
+  //     level: "Intermediate",
+  //     description: "STAR method and soft skills assessment",
+  //     duration: "30–45 min",
+  //     questions: "15 questions",
+  //     color: "green",
+  //   },
+  //   {
+  //     title: "SystemDesign",
+  //     level: "Expert",
+  //     description: "Architecture and scalability discussions",
+  //     duration: "60–90 min",
+  //     questions: "8 questions",
+  //     color: "red",
+  //   },
+  //   {
+  //     title: "CaseStudy",
+  //     level: "Advanced",
+  //     description: "Business scenarios and problem-solving",
+  //     duration: "45–60 min",
+  //     questions: "12 questions",
+  //     color: "purple",
+  //   },
+  // ];
 
   return (
     <div className=" py-20  px-6">

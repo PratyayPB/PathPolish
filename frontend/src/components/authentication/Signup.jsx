@@ -25,12 +25,35 @@ const Signup = () => {
         password,
       });
 
-      if (res.status === 200) {
+      // Backend returns 200 with success: true for successful registration
+      if (res.data.success) {
         setMessage("✅ Account Created Successfully!");
         setTimeout(() => navigate("/login"), 1000);
       }
     } catch (err) {
-      setMessage("❌ Username already exists", err);
+      console.error("Signup error:", err);
+      
+      // Handle different error responses from backend
+      if (err.response) {
+        const errorMessage = err.response.data?.message || "Signup failed";
+        
+        // Handle specific status codes
+        if (err.response.status === 409) {
+          setMessage("❌ " + errorMessage); // User already exists
+        } else if (err.response.status === 400) {
+          setMessage("❌ " + errorMessage); // Validation error
+        } else if (err.response.status === 503) {
+          setMessage("❌ Database error. Please try again later.");
+        } else {
+          setMessage("❌ " + errorMessage);
+        }
+      } else if (err.request) {
+        // Network error - no response received
+        setMessage("❌ Network error. Please check your connection.");
+      } else {
+        // Something else went wrong
+        setMessage("❌ An error occurred. Please try again.");
+      }
     }
   };
   return (
@@ -99,6 +122,12 @@ const Signup = () => {
             Create Account
           </button>
         </form>
+
+        {message && (
+          <p className="text-center mt-3 font-semibold text-gray-700">
+            {message}
+          </p>
+        )}
 
         <p className="mt-6 text-gray-500">
           Already have an account?{" "}

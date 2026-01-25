@@ -26,7 +26,7 @@ const Features = (props, ref) => {
       </div>
 
       <div className="cardsContainer grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 w-full max-w-6xl">
-        <Link to="/career">
+        <Link to="/career" onClick={() => window.scrollTo(0, 0)} >
           <FeatureCard
             image={CareerImage}
             cta="Try Now"
@@ -35,7 +35,7 @@ const Features = (props, ref) => {
           />
         </Link>
 
-        <Link to="/roadmap">
+        <Link to="/roadmap" onClick={() => window.scrollTo(0, 0)} >
           <FeatureCard
             image={RoadmapImage}
             cta="Try Now"
@@ -44,7 +44,7 @@ const Features = (props, ref) => {
           />
         </Link>
 
-        <Link to="/interview">
+        <Link to="/interview" onClick={() => window.scrollTo(0, 0)} >
           <FeatureCard
             image={InterviewHero}
             cta="Try Now"
@@ -53,7 +53,7 @@ const Features = (props, ref) => {
           />
         </Link>
        
-        <Link to="/blogs">
+        <Link to="/blogs" onClick={() => window.scrollTo(0, 0)} >
           <FeatureCard
             image={BlogImage}
             cta="Try Now"

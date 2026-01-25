@@ -19,11 +19,11 @@ const interviewQuestionSchema = new mongoose.Schema({
 
 export const InterviewType = mongoose.model(
   "InterviewType",
-  interviewTypeSchema
+  interviewTypeSchema,
 );
 export const InterviewQuestion = mongoose.model(
   "InterviewQuestion",
-  interviewQuestionSchema
+  interviewQuestionSchema,
 );
 
 //

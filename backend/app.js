@@ -36,7 +36,7 @@ app.use(
     credentials: true, // ✅ allow cookies from frontend
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders: "Content-Type,Authorization",
-  })
+  }),
 );
 
 app.use(express.json());
@@ -59,102 +59,409 @@ app.use(
       mongoUrl: "mongodb://127.0.0.1:27017/PathPolish",
     }),
     cookie: { httpOnly: true, maxAge: 86400000 },
-  })
+  }),
 );
 
 //USER AUTHENTICATION
 
 // REGISTER or SIGNUP
 app.post("/signup", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const existingUser = await User.findOne({ email });
-  if (existingUser)
-    return res.status(400).json({ message: "Username already exists" }); //Redirect to "/login" in frontend
+    // Validation
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required.",
+      });
+    }
 
-  const hashed = await bcrypt.hash(password, 10);
-  await User.create({ email, password: hashed });
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a valid email address.",
+      });
+    }
 
-  res.json({ success: true, message: "User registered" }); //Redirect to the cureent user page before visiting login/register in frontend
-  console.log("User registered:", email);
+    // Validate password length
+    if (password.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters long.",
+      });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        message: "User with this email already exists.",
+      });
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+    await User.create({ email, password: hashed });
+    console.log("User registered:", email);
+
+    res.json({ success: true, message: "User registered successfully" });
+  } catch (error) {
+    console.error("Error in signup:", error);
+
+    // Handle duplicate key error
+    if (error.code === 11000) {
+      return res.status(409).json({
+        success: false,
+        message: "User with this email already exists.",
+      });
+    }
+
+    // Handle bcrypt errors
+    if (error.message?.includes("bcrypt")) {
+      return res.status(500).json({
+        success: false,
+        message: "Error processing password. Please try again.",
+      });
+    }
+
+    // Handle database errors
+    if (
+      error.name === "MongoNetworkError" ||
+      error.name === "MongooseServerSelectionError"
+    ) {
+      return res.status(503).json({
+        success: false,
+        message: "Database connection error. Please try again later.",
+      });
+    }
+
+    if (error.name === "ValidationError") {
+      const validationErrors = Object.values(error.errors).map(
+        (e) => e.message,
+      );
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed.",
+        errors: validationErrors,
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Registration failed. Please try again.",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
 });
 
 // USER LOGIN
 app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
-  if (!user) return res.status(400).json({ message: "User not found" }); //Redirect to "/register" in frontend
+    // Validation
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required.",
+      });
+    }
 
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) return res.status(400).json({ message: "Incorrect password" });
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password.",
+      });
+    }
 
-  req.session.userId = user.userId; // store session
-  res.json({ success: true, email: user.email });
-  console.log("User logged in:", email);
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password.",
+      });
+    }
+
+    req.session.userId = user.userId; // store session
+    console.log("User logged in:", email);
+
+    res.json({ success: true, email: user.email });
+  } catch (error) {
+    console.error("Error in login:", error);
+
+    // Handle bcrypt errors
+    if (error.message?.includes("bcrypt")) {
+      return res.status(500).json({
+        success: false,
+        message: "Error verifying password. Please try again.",
+      });
+    }
+
+    // Handle database errors
+    if (
+      error.name === "MongoNetworkError" ||
+      error.name === "MongooseServerSelectionError"
+    ) {
+      return res.status(503).json({
+        success: false,
+        message: "Database connection error. Please try again later.",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Login failed. Please try again.",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
 });
 
 // LOGOUT
 app.post("/logout", (req, res) => {
-  //Build a frontend logout button with confirmation msg
-  req.session.destroy(() => {
-    res.clearCookie("connect.sid");
-    res.json({ success: true });
-  });
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error destroying session:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Logout failed. Please try again.",
+        });
+      }
+
+      res.clearCookie("connect.sid");
+      res.json({ success: true, message: "Logged out successfully" });
+    });
+  } catch (error) {
+    console.error("Error in logout:", error);
+    res.status(500).json({
+      success: false,
+      message: "Logout failed. Please try again.",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
 });
 
 //ADMIN AUTHENTICATION
 
 // REGISTER or SIGNUP
 app.post("/admin/signup", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const existingAdmin = await Admin.findOne({ email });
-  if (existingAdmin)
-    return res.status(400).json({ message: "Username already exists" }); //Redirect to "/login" in frontend
+    // Validation
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required.",
+      });
+    }
 
-  const hashed = await bcrypt.hash(password, 10);
-  await Admin.create({ email, password: hashed });
+    //Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a valid email address.",
+      });
+    }
 
-  res.json({ success: true, message: "Admin registered" }); //Redirect to the cureent user page before visiting login/register in frontend
-  console.log("Admin registered:", email);
+    // Validate password length
+    if (password.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters long.",
+      });
+    }
+
+    const existingAdmin = await Admin.findOne({ email });
+    if (existingAdmin) {
+      return res.status(409).json({
+        success: false,
+        message: "Admin with this email already exists.",
+      });
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+    await Admin.create({ email, password: hashed });
+    console.log("Admin registered:", email);
+
+    res.json({ success: true, message: "Admin registered successfully" });
+  } catch (error) {
+    console.error("Error in admin signup:", error);
+
+    // Handle duplicate key error
+    if (error.code === 11000) {
+      return res.status(409).json({
+        success: false,
+        message: "Admin with this email already exists.",
+      });
+    }
+
+    // Handle bcrypt errors
+    if (error.message?.includes("bcrypt")) {
+      return res.status(500).json({
+        success: false,
+        message: "Error processing password. Please try again.",
+      });
+    }
+
+    // Handle database errors
+    if (
+      error.name === "MongoNetworkError" ||
+      error.name === "MongooseServerSelectionError"
+    ) {
+      return res.status(503).json({
+        success: false,
+        message: "Database connection error. Please try again later.",
+      });
+    }
+
+    if (error.name === "ValidationError") {
+      const validationErrors = Object.values(error.errors).map(
+        (e) => e.message,
+      );
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed.",
+        errors: validationErrors,
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Admin registration failed. Please try again.",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
 });
 
 //Login
 app.post("/admin/login", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const admin = await Admin.findOne({ email });
-  if (!admin) return res.status(400).json({ message: "Admin not found" }); //Redirect to "/register" in frontend
+    // Validation
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required.",
+      });
+    }
 
-  const match = await bcrypt.compare(password, admin.password);
-  if (!match) return res.status(400).json({ message: "Incorrect password" });
+    const admin = await Admin.findOne({ email });
+    if (!admin) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password.",
+      });
+    }
 
-  req.session.adminId = admin.adminId; // store session
-  res.json({ success: true, email: admin.email });
-  console.log("Admin logged in:", email);
+    const match = await bcrypt.compare(password, admin.password);
+    if (!match) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password.",
+      });
+    }
+
+    req.session.adminId = admin.adminId; // store session
+    console.log("Admin logged in:", email);
+
+    res.json({ success: true, email: admin.email });
+  } catch (error) {
+    console.error("Error in admin login:", error);
+
+    // Handle bcrypt errors
+    if (error.message?.includes("bcrypt")) {
+      return res.status(500).json({
+        success: false,
+        message: "Error verifying password. Please try again.",
+      });
+    }
+
+    // Handle database errors
+    if (
+      error.name === "MongoNetworkError" ||
+      error.name === "MongooseServerSelectionError"
+    ) {
+      return res.status(503).json({
+        success: false,
+        message: "Database connection error. Please try again later.",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Admin login failed. Please try again.",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
 });
 
 // LOGOUT
 app.post("/admin/logout", (req, res) => {
-  //Build a frontend logout button with confirmation msg
-  req.session.destroy(() => {
-    res.clearCookie("connect.sid");
-    res.json({ success: true });
-  });
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error destroying admin session:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Logout failed. Please try again.",
+        });
+      }
+
+      res.clearCookie("connect.sid");
+      res.json({ success: true, message: "Admin logged out successfully" });
+    });
+  } catch (error) {
+    console.error("Error in admin logout:", error);
+    res.status(500).json({
+      success: false,
+      message: "Logout failed. Please try again.",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
 });
 
 // AUTH MIDDLEWARE
 function requireLogin(req, res, next) {
-  //Implement it in Resume,Interview,Roadmaps and CareerGuide
-  if (!req.session.userId)
-    return res.status(401).json({ message: "Login required" });
-  next();
+  try {
+    if (!req.session || !req.session.userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required. PleaseLogin to continue.",
+      });
+    }
+    next();
+  } catch (error) {
+    console.error("Error in requireLogin middleware:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Authentication error. Please try again.",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
 }
 
 // PROTECTED ROUTE
 app.get("/dashboard", requireLogin, (req, res) => {
-  res.json({ message: "Access granted", userId: req.session.userId });
+  try {
+    res.json({
+      success: true,
+      message: "Access granted",
+      userId: req.session.userId,
+    });
+  } catch (error) {
+    console.error("Error in dashboard:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error loading dashboard.",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
 });
 
 //testing mermaid to svg conversion
@@ -176,9 +483,29 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/message", (req, res) => {
-  const { name } = req.body;
-  res.json({ reply: `Hello, ${name}! This is a response from the backend.` });
-  console.log(req.body);
+  try {
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).json({
+        success: false,
+        message: "Name is required.",
+      });
+    }
+
+    res.json({
+      success: true,
+      reply: `Hello, ${name}! This is a response from the backend.`,
+    });
+    console.log("Message request:", req.body);
+  } catch (error) {
+    console.error("Error in /api/message:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error processing message.",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
 });
 
 export default app;

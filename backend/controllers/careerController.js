@@ -19,6 +19,7 @@ const getGuide = async (req, res) => {
       country,
     } = req.body;
 
+    // Validation
     if (
       !name ||
       !interests ||
@@ -29,8 +30,12 @@ const getGuide = async (req, res) => {
       !currentRole ||
       !industry ||
       !country
-    )
-      return res.status(400).json({ message: "Enter all the fields" });
+    ) {
+      return res.status(400).json({ 
+        success: false,
+        message: "All fields are required. Please fill out the complete form." 
+      });
+    }
 
     const prompt = `
       Provide career guidance for a professional with the following details:
@@ -56,29 +61,60 @@ const getGuide = async (req, res) => {
         `;
 
     const result = await geminiModel.generateContent(prompt);
+    
+    if (!result || !result.response) {
+      throw new Error("Invalid response from AI model");
+    }
+    
     const output = await result.response.text();
-    // const response = await geminiModel.generateContent({
-    //   role: "career guide",
-    //   contents: [
-    //     {
-    //       role: "user",
-    //       parts: [{ text: prompt }],
-    //     },
-    //   ],
-    // });
-    console.log(output);
+    
+    if (!output || output.trim().length === 0) {
+      throw new Error("AI model returned empty response");
+    }
+    
+    console.log("Career guide generated successfully for:", name);
 
-    return res.status(200).json({ guide: output });
-
-    // console.log(response.text);
+    return res.status(200).json({ 
+      success: true,
+      guide: output 
+    });
   } catch (error) {
-    console.error("Error generating guide:", error);
-    if (error.code === 503)
-      return res
-        .status(503)
-        .json({ message: "Please try again. Server overloaded." });
+    console.error("Error generating career guide:", error);
+    
+    // Handle AI API specific errors
+    if (error.message?.includes("API key")) {
+      return res.status(500).json({ 
+        success: false,
+        message: "AI service configuration error. Please contact support." 
+      });
+    }
+    
+    if (error.code === 503 || error.message?.includes("overloaded")) {
+      return res.status(503).json({ 
+        success: false,
+        message: "Service is currently busy. Please try again in a few moments." 
+      });
+    }
+    
+    if (error.message?.includes("quota") || error.message?.includes("rate limit")) {
+      return res.status(503).json({ 
+        success: false,
+        message: "Service rate limit exceeded. Please try again later." 
+      });
+    }
+    
+    if (error.message?.includes("timeout")) {
+      return res.status(504).json({ 
+        success: false,
+        message: "Request timeout. Please try again." 
+      });
+    }
 
-    return res.status(500).json({ message: error.message || "Server error" });
+    return res.status(500).json({ 
+      success: false,
+      message: "Failed to generate career guidance. Please try again.",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
+    });
   }
 };
 export default getGuide;

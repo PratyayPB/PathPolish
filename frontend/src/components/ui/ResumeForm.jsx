@@ -50,7 +50,7 @@ const ResumeForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ personal, education, skills, experience });
+   
     alert("Form submitted successfully!");
   };
 

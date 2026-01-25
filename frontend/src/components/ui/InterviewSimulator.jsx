@@ -26,7 +26,7 @@ const InterviewSimulator = () => {
           `http://localhost:5000/api/interview/questions/${typeName}`
         );
         setQuestions(response.data[0].question_text);
-        console.log(response.data[0].question_text);
+       
 
         // 3. SIMPLIFIED FETCH LOGIC: Set the fetched array directly
 
@@ -107,7 +107,7 @@ const InterviewSimulator = () => {
   };
 
   return (
-    <div className="min-h-screen  pt-30 px-6">
+    <div className="min-h-screen  pt-30 px-6" id="interview-simulator">
       {feedback ? (
         // 🌟 SHOW FEEDBACK DISPLAY 🌟
         <div className="flex flex-col items-center justify-center">

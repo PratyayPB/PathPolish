@@ -29,6 +29,10 @@ const RoadmapForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.duration || !formData.role) {
+      alert("Please fill in all fields.");
+      return;
+    }
     alert("Roadmap Form Submitted;Please wait for the Roadmap!", formData);
     try {
       const res = await axios.post(

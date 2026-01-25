@@ -1,9 +1,9 @@
 import express from "express";
 import {
   getInterviewFeedback,
-  getInterviewQuestions,
   createInterviewType,
   createInterviewQuestion,
+  getInterviewTypes,
 } from "../controllers/interviewController.js";
 import { InterviewType } from "../models/interviewModel.js";
 import { InterviewQuestion } from "../models/interviewModel.js";
@@ -21,6 +21,7 @@ function requireAdmin(req, res, next) {
 router.post("/feedback", getInterviewFeedback);
 router.post("/createInterviewType", createInterviewType);
 router.post("/createInterviewQuestion", createInterviewQuestion);
+router.get("/types", getInterviewTypes);
 router.get("/questions/:typeName", async (req, res) => {
   try {
     const { typeName } = req.params;

@@ -22,19 +22,42 @@ const Login = () => {
 
     try {
       const res = await axios.post("http://localhost:5000/login", {
-        email: email, // backend expects username field
+        email: email,
         password: password,
       });
 
-      if (res.status === 200) {
+      // Backend returns 200 with success: true for successful login
+      if (res.data.success) {
         localStorage.setItem("isLoggedIn", "true");
-        setIsLoggedIn(true); // set isLoggedIn to true
+        setIsLoggedIn(true);
         setMessage("✅ Login Successful!");
-        setTimeout(() => navigate("/"), 1000); // redirect after success
+        setTimeout(() => navigate("/"), 1000);
       }
     } catch (error) {
-      setMessage("❌ Invalid Credentials or Server Error", error);
+      console.error("Login error:", error);
       setIsLoggedIn(false);
+      
+      // Handle different error responses from backend
+      if (error.response) {
+        const errorMessage = error.response.data?.message || "Login failed";
+        
+        // Handle specific status codes
+        if (error.response.status === 401) {
+          setMessage("❌ " + errorMessage); // Invalid credentials
+        } else if (error.response.status === 400) {
+          setMessage("❌ " + errorMessage); // Validation error
+        } else if (error.response.status === 503) {
+          setMessage("❌ Database error. Please try again later.");
+        } else {
+          setMessage("❌ " + errorMessage);
+        }
+      } else if (error.request) {
+        // Network error - no response received
+        setMessage("❌ Network error. Please check your connection.");
+      } else {
+        // Something else went wrong
+        setMessage("❌ An error occurred. Please try again.");
+      }
     }
   };
 
