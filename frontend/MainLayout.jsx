@@ -7,8 +7,6 @@ const MainLayout = () => {
   return (
     <div>
       <Header />
-      {/* The <Outlet> is replaced by page components 
-            (e.g., <LandingPage />, <Career />, etc.) */}
       <Outlet />
       <Footer />
     </div>

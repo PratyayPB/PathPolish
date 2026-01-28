@@ -101,7 +101,7 @@ const createInterviewQuestion = async (req, res) => {
     }
 
     // Validate question length
-    if (question_text.trim().length < 5) {
+    if (question_text.length < 5) {
       return res.status(400).json({
         success: false,
         message: "Question text must be at least 5 characters long.",
@@ -119,7 +119,7 @@ const createInterviewQuestion = async (req, res) => {
     const interviewQuestion = await InterviewQuestion.create({
       interview_type_id: type._id,
       type_name: type_name.trim(),
-      question_text: question_text.trim(),
+      question_text: question_text.map((q) => q.trim()),
     });
 
     return res.status(201).json({

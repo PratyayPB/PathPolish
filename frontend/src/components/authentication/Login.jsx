@@ -4,14 +4,13 @@ import Logo from "../../assets/logo-pathpolish.png";
 import { Link, useNavigate } from "react-router-dom";
 import Show from "../../assets/icons/eye.svg";
 import Hide from "../../assets/icons/eyeSlashed.svg";
-import axios from "axios";
-
-axios.defaults.withCredentials = true;
+import api from "../../api/api";
+import useAuth from "../../context/useAuth";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useAuth();
 
   const [email, setEmail] = useState(""); // store input
   const [password, setPassword] = useState("");
@@ -21,26 +20,24 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/login", {
+      const res = await api.post("/login", {
         email: email,
         password: password,
       });
 
       // Backend returns 200 with success: true for successful login
       if (res.data.success) {
-        localStorage.setItem("isLoggedIn", "true");
-        setIsLoggedIn(true);
-        setMessage("✅ Login Successful!");
+        setMessage("✅ Login successful! Redirecting...");
+        setIsAuthenticated(true);
         setTimeout(() => navigate("/"), 1000);
       }
     } catch (error) {
       console.error("Login error:", error);
-      setIsLoggedIn(false);
-      
+
       // Handle different error responses from backend
       if (error.response) {
         const errorMessage = error.response.data?.message || "Login failed";
-        
+
         // Handle specific status codes
         if (error.response.status === 401) {
           setMessage("❌ " + errorMessage); // Invalid credentials

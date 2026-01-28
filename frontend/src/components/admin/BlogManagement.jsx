@@ -51,7 +51,7 @@ const BlogManagement = () => {
       });
 
       if (response.status === 201 || response.status === 200) {
-        console.log("Blog created successfully:", response.data);
+        // 
         setSuccess("Blog created successfully!");
 
         // Reset form

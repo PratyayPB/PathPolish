@@ -57,29 +57,25 @@ const InterviewManagement = () => {
       // Step 1: Create Interview Type
       const typeRes = await axios.post(
         "http://localhost:5000/api/interview/createInterviewType",
-        typeFormData
+        typeFormData,
       );
 
       if (typeRes.status === 201) {
-        console.log("Interview Type Created Successfully");
-
         // Step 2: Create Interview Questions with the type_name from typeFormData
         const questionsPayload = {
           type_name: typeFormData.type_name,
           question_text: questionsFormData.question_text.filter((q) =>
-            q.trim()
+            q.trim(),
           ), // Only send non-empty questions
         };
 
         try {
-          console.log(questionsPayload);
           const questionRes = await axios.post(
             "http://localhost:5000/api/interview/createInterviewQuestion",
-            questionsPayload
+            questionsPayload,
           );
 
           if (questionRes.status === 201) {
-            console.log("Interview Questions Created Successfully");
             alert("Interview Type and Questions created successfully!");
 
             // Reset form
@@ -93,7 +89,7 @@ const InterviewManagement = () => {
           console.error("Error creating interview questions:", error);
           setError(
             "Error creating questions: " +
-              (error.response?.data?.message || error.message)
+              (error.response?.data?.message || error.message),
           );
         }
       }
@@ -101,7 +97,7 @@ const InterviewManagement = () => {
       console.error("Error creating interview type:", error);
       setError(
         "Error creating interview type: " +
-          (error.response?.data?.message || error.message)
+          (error.response?.data?.message || error.message),
       );
     } finally {
       setLoading(false);

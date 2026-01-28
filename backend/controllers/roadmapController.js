@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+
 // import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
 import mermaid from "mermaid";
 import dotenv from "dotenv";
@@ -24,59 +25,74 @@ Structure the chart for clear visual progression from beginner to advanced.
 `;
 
     const result = await model.generateContent(prompt);
-    
+
     if (!result || !result.response) {
       throw new Error("Invalid response from AI model");
     }
 
     let responseText = await result.response.text();
-    
+
     if (!responseText || responseText.trim().length === 0) {
       throw new Error("AI model returned empty response");
     }
-    
+
     responseText = responseText.replace(/```mermaid\n|```/g, "").trim();
     return responseText;
   } catch (error) {
     console.error("Error in generateMermaidCode:", error);
-    
+
     // Re-throw with more context
     if (error.message?.includes("API key")) {
       throw new Error("Invalid or missing API key for AI service");
     }
-    
-    if (error.message?.includes("quota") || error.message?.includes("rate limit")) {
-      throw new Error("AI service rate limit exceeded. Please try again later.");
+
+    if (
+      error.message?.includes("quota") ||
+      error.message?.includes("rate limit")
+    ) {
+      throw new Error(
+        "AI service rate limit exceeded. Please try again later.",
+      );
     }
-    
+
     throw error;
   }
 }
 
-const generateRoadmap = async (req, res) => {
+const generateRoadmap = async (req, res, next) => {
   try {
-    const { role, duration } = req.body;
-    
-    // Validation errors
-    if (!role || !duration) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Role and duration are required." 
+    // requireLogin(req,res,next);
+    if (!req.session || !req.session.userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required. Please login to continue.",
       });
     }
-    
+    console.log("User ID:", req.session.userId);
+    console.log("Session ID:", req.session.id);
+    console.log("Session User ID:", req.session.userId);
+
+    const { role, duration } = req.body;
+
+    if (!role || !duration) {
+      return res.status(400).json({
+        success: false,
+        message: "Role and duration are required.",
+      });
+    }
+
     // Validate role length
     if (role.trim().length < 2) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Role must be at least 2 characters long." 
+      return res.status(400).json({
+        success: false,
+        message: "Role must be at least 2 characters long.",
       });
     }
-    
+
     //  Check if roadmap already exists
-    const existingRoadmap = await Roadmap.findOne({ 
-      role: role.trim(), 
-      duration: duration.trim() 
+    const existingRoadmap = await Roadmap.findOne({
+      role: role.trim(),
+      duration: duration.trim(),
     });
 
     if (existingRoadmap) {
@@ -93,9 +109,9 @@ const generateRoadmap = async (req, res) => {
 
     if (!mermaidCode || mermaidCode.trim().length === 0) {
       console.error("❌ Failed to generate Mermaid code.");
-      return res.status(500).json({ 
-        success: false, 
-        message: "Failed to generate roadmap. Please try again." 
+      return res.status(500).json({
+        success: false,
+        message: "Failed to generate roadmap. Please try again.",
       });
     }
 
@@ -116,51 +132,56 @@ const generateRoadmap = async (req, res) => {
     });
   } catch (error) {
     console.error("❌ Error generating roadmap:", error);
-    
+
     // Handle AI API specific errors
     if (error.message?.includes("API key")) {
-      return res.status(500).json({ 
-        success: false, 
-        message: "AI service configuration error. Please contact support." 
+      return res.status(500).json({
+        success: false,
+        message: "AI service configuration error. Please contact support.",
       });
     }
-    
+
     if (error.message?.includes("rate limit")) {
-      return res.status(503).json({ 
-        success: false, 
-        message: "Service is busy. Please try again in a few moments." 
+      return res.status(503).json({
+        success: false,
+        message: "Service is busy. Please try again in a few moments.",
       });
     }
-    
+
     if (error.message?.includes("timeout")) {
-      return res.status(504).json({ 
-        success: false, 
-        message: "Request timeout. Please try again." 
+      return res.status(504).json({
+        success: false,
+        message: "Request timeout. Please try again.",
       });
     }
-    
+
     // Handle database errors
-    if (error.name === "MongoNetworkError" || error.name === "MongooseServerSelectionError") {
-      return res.status(503).json({ 
-        success: false, 
-        message: "Database connection error. Please try again later." 
+    if (
+      error.name === "MongoNetworkError" ||
+      error.name === "MongooseServerSelectionError"
+    ) {
+      return res.status(503).json({
+        success: false,
+        message: "Database connection error. Please try again later.",
       });
     }
-    
+
     if (error.name === "ValidationError") {
-      const validationErrors = Object.values(error.errors).map(e => e.message);
-      return res.status(400).json({ 
-        success: false, 
+      const validationErrors = Object.values(error.errors).map(
+        (e) => e.message,
+      );
+      return res.status(400).json({
+        success: false,
         message: "Validation failed.",
-        errors: validationErrors
+        errors: validationErrors,
       });
     }
-    
+
     // Generic error
-    return res.status(500).json({ 
-      success: false, 
+    return res.status(500).json({
+      success: false,
       message: "Failed to generate roadmap. Please try again later.",
-      error: process.env.NODE_ENV === "development" ? error.message : undefined
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
 };

@@ -4,6 +4,8 @@ import ChevronDown from "../../assets/icons/chevron-down.svg";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import bg from "../../assets/headerBackground.png";
 import "../../App.css";
+import api from "../../api/api";
+import useAuth from "../../context/useAuth";
 
 import axios from "axios";
 
@@ -21,13 +23,13 @@ const NAV_ITEMS = [
       { name: "Roadmap Generator", path: "/roadmap" },
       { name: "Interview Simulation", path: "/interview" },
       { name: "Blogs", path: "/blogs" },
-      { name: "Admin", path: "/admin/login" },
+      { name: "Admin", path: "/admin" },
     ],
   },
 ];
 
 const Header = () => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  // const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -36,19 +38,39 @@ const Header = () => {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
+  const { isAuthenticated, loading, setIsAuthenticated } = useAuth();
+  console.log(isAuthenticated);
+  if (loading) {
+    return (
+      <div className="text-center text-[#3E3651]  ">
+        Checking authentication...
+      </div>
+    );
+  }
+
   const handleSectionNavigation = (sectionId) => {
     closeMobileMenu();
     if (location.pathname !== "/") {
       navigate("/", { state: { fromHeader: true, scrollTo: sectionId } });
     } else {
-      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+      document
+        .getElementById(sectionId)
+        ?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  const handleLogout = () => {
-     localStorage.removeItem("isLoggedIn");
-     // Add any other logout logic here (e.g. axios call)
-     window.location.reload(); 
+  const handleLogout = async () => {
+    // localStorage.removeItem("isLoggedIn");
+    // // Add any other logout logic here (e.g. axios call)
+    // window.location.reload();
+
+    try {
+      await api.post("/logout");
+      setIsAuthenticated(false);
+      window.location.reload();
+    } catch {
+      console.error("Logout failed");
+    }
   };
 
   return (
@@ -121,7 +143,7 @@ const Header = () => {
             return null;
           })}
 
-          {!isLoggedIn ? (
+          {!isAuthenticated ? (
             <Link to="/login">
               <button className="bg-[#3E3651] text-white px-6 py-2 rounded-full hover:bg-violet-800 hover:scale-105 cursor-pointer text-base transition-all">
                 Login
@@ -194,7 +216,10 @@ const Header = () => {
               }
               if (item.type === "dropdown") {
                 return (
-                  <div key={index} className="w-full flex flex-col items-center">
+                  <div
+                    key={index}
+                    className="w-full flex flex-col items-center"
+                  >
                     <button
                       onClick={() => setMobileFeaturesOpen(!mobileFeaturesOpen)}
                       className="flex items-center gap-2 font-bold py-2 cursor-pointer"
@@ -230,8 +255,12 @@ const Header = () => {
             })}
           </ul>
 
-          {!isLoggedIn ? (
-            <Link to="/login" onClick={closeMobileMenu} className="w-full max-w-xs">
+          {!isAuthenticated ? (
+            <Link
+              to="/login"
+              onClick={closeMobileMenu}
+              className="w-full max-w-xs"
+            >
               <button className="bg-[#3E3651] text-white px-8 py-3 rounded-full hover:bg-violet-800 cursor-pointer w-full">
                 Login
               </button>

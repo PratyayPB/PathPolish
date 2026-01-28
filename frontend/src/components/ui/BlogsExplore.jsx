@@ -31,6 +31,10 @@ const BlogsExplore = () => {
 
         setBlogs(updatedBlogs);
       } catch (error) {
+        if (error.response && error.response.status === 401) {
+          alert("Please log in to use this feature.");
+          window.location.href = "/login";
+        }
         console.error("Error fetching blogs:", error);
       }
     };

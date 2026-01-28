@@ -33,12 +33,13 @@ const RoadmapForm = () => {
       alert("Please fill in all fields.");
       return;
     }
-    alert("Roadmap Form Submitted;Please wait for the Roadmap!", formData);
+
     try {
       const res = await axios.post(
         "http://localhost:5000/api/roadmap",
-        formData
+        formData,
       );
+
       setResponseData(res.data.mermaidCode);
       // setDbStore({ ...dbStore, mermaidCode: res.data.mermaidCode });
       // const sendToDB = await axios.post(

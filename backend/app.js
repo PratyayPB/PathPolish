@@ -13,16 +13,12 @@ import dotenv from "dotenv";
 import User from "./models/userModel.js";
 import Admin from "./models/adminModel.js";
 import blogRoutes from "./routes/blogsRoutes.js";
-// import roadmapRoutes from "./routes/roadmapRoutes.js";
-// import blogRoutes from "./routes/blogRoutes.js";
-// import faqRoutes from "./routes/faqRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import { requireLogin } from "./middleware/authMiddleware.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// import authRoutes from "./routes/authRoutes.js";
-// import aiRoutes from "./routes/aiRoutes.js";
 
 dotenv.config();
 
@@ -45,24 +41,24 @@ app.use(morgan("dev"));
 app.set("view engine", "ejs");
 app.set("controllers", path.join(__dirname, "views"));
 
-{
-  /*  User Authentication and Authorization */
-}
-
 // Sessions
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "secret123",
+    name: "connect.sid",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: "mongodb://127.0.0.1:27017/PathPolish",
     }),
-    cookie: { httpOnly: true, maxAge: 86400000 },
+    cookie: {
+      httpOnly: true,
+      maxAge: 86400000,
+      sameSite: "lax",
+      secure: false,
+    },
   }),
 );
-
-//USER AUTHENTICATION
 
 // REGISTER or SIGNUP
 app.post("/signup", async (req, res) => {
@@ -185,10 +181,22 @@ app.post("/login", async (req, res) => {
       });
     }
 
-    req.session.userId = user.userId; // store session
-    console.log("User logged in:", email);
+    // 🔐 REGENERATE SESSION (security)
+    req.session.regenerate((err) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ success: false, message: "Session error" });
+      }
 
-    res.json({ success: true, email: user.email });
+      req.session.userId = user._id.toString();
+
+      res.json({
+        success: true,
+        message: "Login successful",
+        email: user.email,
+      });
+    });
   } catch (error) {
     console.error("Error in login:", error);
 
@@ -231,7 +239,7 @@ app.post("/logout", (req, res) => {
         });
       }
 
-      res.clearCookie("connect.sid");
+      res.clearCookie("connect.sid", { httpOnly: true, sameSite: "lax" });
       res.json({ success: true, message: "Logged out successfully" });
     });
   } catch (error) {
@@ -366,11 +374,20 @@ app.post("/admin/login", async (req, res) => {
         message: "Invalid email or password.",
       });
     }
+    req.session.regenerate((err) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ success: false, message: "Session error" });
+      }
+      req.session.adminId = admin._id.toString();
+      res.json({ success: true, email: admin.email });
+    });
 
-    req.session.adminId = admin.adminId; // store session
-    console.log("Admin logged in:", email);
+    // req.session.adminId = admin._id.toString(); // store session
+    // console.log("Admin logged in:", email);
 
-    res.json({ success: true, email: admin.email });
+    // res.json({ success: true, email: admin.email });
   } catch (error) {
     console.error("Error in admin login:", error);
 
@@ -426,44 +443,6 @@ app.post("/admin/logout", (req, res) => {
   }
 });
 
-// AUTH MIDDLEWARE
-function requireLogin(req, res, next) {
-  try {
-    if (!req.session || !req.session.userId) {
-      return res.status(401).json({
-        success: false,
-        message: "Authentication required. PleaseLogin to continue.",
-      });
-    }
-    next();
-  } catch (error) {
-    console.error("Error in requireLogin middleware:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Authentication error. Please try again.",
-      error: process.env.NODE_ENV === "development" ? error.message : undefined,
-    });
-  }
-}
-
-// PROTECTED ROUTE
-app.get("/dashboard", requireLogin, (req, res) => {
-  try {
-    res.json({
-      success: true,
-      message: "Access granted",
-      userId: req.session.userId,
-    });
-  } catch (error) {
-    console.error("Error in dashboard:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error loading dashboard.",
-      error: process.env.NODE_ENV === "development" ? error.message : undefined,
-    });
-  }
-});
-
 //testing mermaid to svg conversion
 app.get("/test-mermaid", (req, res) => {
   res.render("mermaidToSvg");
@@ -475,11 +454,25 @@ app.use("/api/interview", interviewRoutes);
 app.use("/api/roadmap", requireLogin, roadmapRoutes);
 app.use("/api/blogs", blogRoutes);
 
-//LOGIN CHECK FOR ADMINS
-
 //Base Route
 app.get("/", (req, res) => {
   res.send("Hello World!");
+});
+app.get("/me", (req, res) => {
+  if (!req.session?.userId) {
+    console.log("User not authenticated");
+    return res.status(401).json({ authenticated: false });
+  }
+
+  console.log("User authenticated");
+  if (req.session.userId) {
+    console.log("User ID:", req.session.userId);
+    console.log("Session ID:", req.session.id);
+    res.json({
+      authenticated: true,
+      userId: req.session.userId,
+    });
+  }
 });
 
 app.post("/api/message", (req, res) => {

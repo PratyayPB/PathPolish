@@ -5,13 +5,16 @@ import { Link, useNavigate } from "react-router-dom";
 import Show from "../../assets/icons/eye.svg";
 import Hide from "../../assets/icons/eyeSlashed.svg";
 import axios from "axios";
+import api from "../../api/api";
+import useAuth from "../../context/useAuth";
 
 axios.defaults.withCredentials = true;
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useAuth();
 
   const [email, setEmail] = useState(""); // store input
   const [password, setPassword] = useState("");
@@ -21,20 +24,18 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/login", {
+      const res = await api.post("http://localhost:5000/admin/login", {
         email: email, // backend expects username field
         password: password,
       });
 
-      if (res.status === 200) {
-        localStorage.setItem("isLoggedIn", "true");
-        setIsLoggedIn(true); // set isLoggedIn to true
+      if (res.data.success) {
         setMessage("✅ Login Successful!");
+        setIsAuthenticated(true);
         setTimeout(() => navigate("/admin"), 1000); // redirect after success
       }
     } catch (error) {
       setMessage("❌ Invalid Credentials or Server Error", error);
-      setIsLoggedIn(false);
     }
   };
 
@@ -114,13 +115,6 @@ const Login = () => {
             {message}
           </p>
         )}
-
-        <p className="mt-6 text-gray-500">
-          Don’t have an account?{" "}
-          <a href="/admin/signup" className="text-[#3E3651] font-semibold">
-            Signup Here
-          </a>
-        </p>
       </div>
     </div>
   );

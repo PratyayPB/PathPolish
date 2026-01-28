@@ -23,10 +23,9 @@ const InterviewSimulator = () => {
     const fetchQuestions = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/interview/questions/${typeName}`
+          `http://localhost:5000/api/interview/questions/${typeName}`,
         );
         setQuestions(response.data[0].question_text);
-       
 
         // 3. SIMPLIFIED FETCH LOGIC: Set the fetched array directly
 
@@ -70,7 +69,7 @@ const InterviewSimulator = () => {
   const handleResponseChange = (e) => {
     const updatedResponses = [...responses];
     const responseIndex = updatedResponses.findIndex(
-      (r) => r.question === currentQuestion
+      (r) => r.question === currentQuestion,
     );
 
     if (responseIndex !== -1) {
@@ -91,16 +90,19 @@ const InterviewSimulator = () => {
   };
 
   const handleSubmit = async () => {
-    alert("Responses submitted successfully!Waiting for Feedback...");
     const payload = { responses };
     try {
       const res = await axios.post(
         "http://localhost:5000/api/interview/feedback",
-        payload
+        payload,
       );
       setFeedback(res.data.feedback);
       alert("Feedback Ready!");
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        alert("Please log in to use this feature.");
+        window.location.href = "/login";
+      }
       console.error("Error sending form data:", error);
       alert("Error submitting responses");
     }

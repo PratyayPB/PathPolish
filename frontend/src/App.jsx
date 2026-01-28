@@ -26,6 +26,7 @@ import InterviewManagement from "./components/admin/InterviewManagement";
 import BlogManagement from "./components/admin/BlogManagement";
 import AdminLogin from "./components/admin/AdminLogin";
 import AdminRegister from "./components/admin/AdminRegister";
+import AdminRoute from "./components/admin/AdminRoute";
 
 const App = () => {
   return (
@@ -42,10 +43,12 @@ const App = () => {
         </Route>
 
         {/* Admin Routes */}
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/interviews" element={<InterviewManagement />} />
+        <Route element={<AdminRoute />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/interviews" element={<InterviewManagement />} />
+          <Route path="/admin/blogs" element={<BlogManagement />} />
+        </Route>
 
-        <Route path="/admin/blogs" element={<BlogManagement />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/signup" element={<AdminRegister />} />
 

@@ -1,24 +1,29 @@
 import React from "react";
 import InterviewTypeCard from "./InterviewTypeCard";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
-
 const InterviewTypePage = () => {
-  const [interviewTypes,setInterviewTypes]=useState([])
+  const [interviewTypes, setInterviewTypes] = useState([]);
 
   useEffect(() => {
-    const fetchInterviewTypes = async () => {
-      const response = await axios.get("http://localhost:5000/api/interview/types");
-      const data=response.data.data;
-      setInterviewTypes(data);
-    };
-    fetchInterviewTypes();
-
+    try {
+      const fetchInterviewTypes = async () => {
+        const response = await axios.get(
+          "http://localhost:5000/api/interview/types",
+          {
+            withCredentials: true,
+          },
+        );
+        const data = response.data.data;
+        setInterviewTypes(data);
+      };
+      fetchInterviewTypes();
+    } catch (error) {
+      console.error("Error fetching interview types:", error);
+    }
   }, []);
   console.log(interviewTypes);
-
-  
 
   // const interviewTypes = [
   //   {

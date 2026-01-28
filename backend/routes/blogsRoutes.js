@@ -1,6 +1,6 @@
 import express from "express";
 import { getBlogs, createBlog } from "../controllers/blogsController.js";
-
+import { requireLogin } from "../middleware/authMiddleware.js"; 
 const router = express.Router();
 
 function requireAdmin(req, res, next) {
@@ -9,7 +9,7 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-router.get("/", getBlogs);
+router.get("/",requireLogin, getBlogs);
 router.post("/", createBlog);
 
 export default router;

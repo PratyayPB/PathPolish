@@ -9,9 +9,11 @@ import bg from "../../assets/bgLong.png";
 import heroImage from "../../assets/landingPageHero.jpg";
 import Login from "../authentication/Login";
 import { useNavigate, Link, useLocation } from "react-router-dom";
+
 const Landingpage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const handleSectionNavigation = (sectionId) => {
     if (location.pathname !== "/") {
       // If not on home page, navigate home first then scroll

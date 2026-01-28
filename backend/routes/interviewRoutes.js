@@ -7,18 +7,25 @@ import {
 } from "../controllers/interviewController.js";
 import { InterviewType } from "../models/interviewModel.js";
 import { InterviewQuestion } from "../models/interviewModel.js";
-
+import { requireLogin } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 // POST /interview/feedback  -> accepts responses array and returns AI feedback
 // router.get("/questions", getInterviewQuestions);
-function requireAdmin(req, res, next) {
-  if (!req.session.adminId)
-    return res.status(401).json({ message: "Admin login required" });
-  next();
-}
+// function requireAdmin(req, res, next) {
+//   if (!req.session || !req.session.adminId)
+//     return res.status(401).json({ message: "Admin login required" });
+//   next();
+// }
 
-router.post("/feedback", getInterviewFeedback);
+// function requireLogin(req, res, next) {
+//   if (!req.session || !req.session.userId) {
+//     return res.status(401).json({ message: "User login required" });
+//   }
+//   next();
+// }
+
+router.post("/feedback", requireLogin, getInterviewFeedback);
 router.post("/createInterviewType", createInterviewType);
 router.post("/createInterviewQuestion", createInterviewQuestion);
 router.get("/types", getInterviewTypes);

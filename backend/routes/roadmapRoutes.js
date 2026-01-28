@@ -3,8 +3,22 @@ import generateRoadmap from "../controllers/roadmapController.js";
 import Roadmap from "../models/roadmapModel.js";
 const router = express.Router();
 
+function requireLogin(req, res, next) {
+  try {
+    if (!req.session?.userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required. Please Login to continue.",
+      });
+    }
+    next();
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+}
+
 // POST /roadmap/generate -> generates AI roadmap in Mermaid format
-router.post("/", generateRoadmap);
+router.post("/", requireLogin, generateRoadmap);
 router.post("/save", async (req, res) => {
   const { role, duration, mermaidCode } = req.body;
 
