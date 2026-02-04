@@ -8,6 +8,13 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import bcrypt from "bcrypt";
+import { requireLogin } from "./middleware/authMiddleware.js";
+import User from "./models/userModel.js";
+import Admin from "./models/adminModel.js";
+import careerRoutes from "./routes/careerRoutes.js";
+import interviewRoutes from "./routes/interviewRoutes.js";
+import roadmapRoutes from "./routes/roadmapRoutes.js";
+import blogRoutes from "./routes/blogRoutes.js";
 
 // ===== Load env ONLY locally =====
 if (process.env.NODE_ENV !== "production") {
