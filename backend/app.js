@@ -13,7 +13,7 @@ import User from "./models/userModel.js";
 import Admin from "./models/adminModel.js";
 import careerRoutes from "./routes/careerRoute.js";
 import interviewRoutes from "./routes/interviewRoutes.js";
-import roadmapRoutes from "./routes/roadmapRoute.js";
+import roadmapRoutes from "./routes/roadmapRoutes.js";
 import blogRoutes from "./routes/blogsRoutes.js";
 
 // ===== Load env ONLY locally =====
