@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../api/api";
 import { Link } from "react-router-dom";
 import BlogCard from "../ui/BlogCard";
 
@@ -21,7 +21,7 @@ const BlogsExplore = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/blogs");
+        const response = await api.get("/api/blogs");
 
         // Add slug to each blog
         const updatedBlogs = response.data.map((blog) => ({

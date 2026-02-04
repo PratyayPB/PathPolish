@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../../api/api";
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
 import { Link } from "react-router-dom";
@@ -44,7 +44,7 @@ const BlogManagement = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/blogs", {
+      const response = await api.post("/api/blogs", {
         title: formData.title,
         content: formData.content,
         author: formData.author,

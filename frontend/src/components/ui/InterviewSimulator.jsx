@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Play, RotateCcw } from "lucide-react";
-import axios from "axios";
+import api from "../../api/api";
 
 import FeedbackDisplay from "./InterviewFeedbackDisplay";
 import { useParams } from "react-router-dom";
@@ -22,8 +22,8 @@ const InterviewSimulator = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/interview/questions/${typeName}`,
+        const response = await api.get(
+          `/api/interview/questions/${typeName}`,
         );
         setQuestions(response.data[0].question_text);
 
@@ -92,8 +92,8 @@ const InterviewSimulator = () => {
   const handleSubmit = async () => {
     const payload = { responses };
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/interview/feedback",
+      const res = await api.post(
+        "/api/interview/feedback",
         payload,
       );
       setFeedback(res.data.feedback);

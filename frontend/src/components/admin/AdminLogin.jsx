@@ -24,7 +24,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await api.post("http://localhost:5000/admin/login", {
+      const res = await api.post("/admin/login", {
         email: email, // backend expects username field
         password: password,
       });

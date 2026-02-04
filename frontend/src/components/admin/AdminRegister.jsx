@@ -5,9 +5,9 @@ import Logo from "../../assets/logo-pathpolish.png";
 import { Link, useNavigate } from "react-router-dom";
 import Show from "../../assets/icons/eye.svg";
 import Hide from "../../assets/icons/eyeSlashed.svg";
-import axios from "axios";
+import api from "../../api/api";
 
-axios.defaults.withCredentials = true;
+
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/admin/signup", {
+      const res = await api.post("/admin/signup", {
         email,
         password,
       });

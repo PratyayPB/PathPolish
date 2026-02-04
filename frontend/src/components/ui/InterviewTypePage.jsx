@@ -1,7 +1,7 @@
 import React from "react";
 import InterviewTypeCard from "./InterviewTypeCard";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../api/api";
 
 const InterviewTypePage = () => {
   const [interviewTypes, setInterviewTypes] = useState([]);
@@ -9,11 +9,8 @@ const InterviewTypePage = () => {
   useEffect(() => {
     try {
       const fetchInterviewTypes = async () => {
-        const response = await axios.get(
-          "http://localhost:5000/api/interview/types",
-          {
-            withCredentials: true,
-          },
+        const response = await api.get(
+          "/api/interview/types",
         );
         const data = response.data.data;
         setInterviewTypes(data);

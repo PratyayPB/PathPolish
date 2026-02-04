@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import AuthContext from "./authContext";
 import api from "../api/api";
 
+
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);

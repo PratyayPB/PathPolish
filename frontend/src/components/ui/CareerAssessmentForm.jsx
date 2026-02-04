@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../../api/api";
 import ReactMarkdown from "react-markdown";
 
 const CareerAssessmentForm = () => {
@@ -29,8 +29,8 @@ const CareerAssessmentForm = () => {
     setResponseData(null);
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/career-guide",
+      const res = await api.post(
+        "/api/career-guide",
         formData
       );
 

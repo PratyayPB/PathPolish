@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../../api/api";
 import bg from "../../assets/background.png";
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
@@ -55,8 +55,8 @@ const InterviewManagement = () => {
 
     try {
       // Step 1: Create Interview Type
-      const typeRes = await axios.post(
-        "http://localhost:5000/api/interview/createInterviewType",
+      const typeRes = await api.post(
+        "/api/interview/createInterviewType",
         typeFormData,
       );
 
@@ -70,8 +70,8 @@ const InterviewManagement = () => {
         };
 
         try {
-          const questionRes = await axios.post(
-            "http://localhost:5000/api/interview/createInterviewQuestion",
+          const questionRes = await api.post(
+            "/api/interview/createInterviewQuestion",
             questionsPayload,
           );
 
