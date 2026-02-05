@@ -1,11 +1,13 @@
 import dotenv from "dotenv";
 import app from "./app.js";
-import connectdb from "./config/db.js";
+import connectDB from "./config/db.js";
 
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
 
 // Connect to database
-connectdb();
+await connectDB();
 
 // Export the Express app for Vercel
 export default app;

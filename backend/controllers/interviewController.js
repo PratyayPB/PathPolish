@@ -1,7 +1,9 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 import { InterviewType, InterviewQuestion } from "../models/interviewModel.js";
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
 
 const geminiAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const geminiModel = geminiAI.getGenerativeModel({ model: "gemini-2.5-flash" });

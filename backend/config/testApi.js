@@ -5,7 +5,9 @@
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
 
 // DO NOT hard-code your key like this in a real app!
 // Use process.env.GEMINI_API_KEY

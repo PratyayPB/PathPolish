@@ -4,7 +4,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import mermaid from "mermaid";
 import dotenv from "dotenv";
 import Roadmap from "../models/roadmapModel.js";
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
 const GenAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = GenAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 

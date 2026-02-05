@@ -11,7 +11,7 @@ import bcrypt from "bcrypt";
 import { requireLogin } from "./middleware/authMiddleware.js";
 import User from "./models/userModel.js";
 import Admin from "./models/adminModel.js";
-import careerRoutes from "./routes/careerRoute.js";
+import careerRoutes from "./routes/careerRoutes.js";
 import interviewRoutes from "./routes/interviewRoutes.js";
 import roadmapRoutes from "./routes/roadmapRoutes.js";
 import blogRoutes from "./routes/blogsRoutes.js";
@@ -19,6 +19,13 @@ import blogRoutes from "./routes/blogsRoutes.js";
 // ===== Load env ONLY locally =====
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
+}
+if (!process.env.MONGODB_URI) {
+  throw new Error("MONGODB_URI is missing");
+}
+
+if (!process.env.SESSION_SECRET) {
+  throw new Error("SESSION_SECRET is missing");
 }
 
 // ===== Setup paths =====
@@ -29,9 +36,11 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // ===== CORS =====
+
+const FRONTEND_URL = process.env.FRONTEND_URL.trim();
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: FRONTEND_URL || "http://localhost:5173",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -56,6 +65,7 @@ app.use(
     saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
+      ttl: 24 * 60 * 60, // 1 day
     }),
     cookie: {
       httpOnly: true,
