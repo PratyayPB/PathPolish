@@ -9,14 +9,9 @@
 ## 🌐 Live Deployment
 
 The project is deployed as a full-stack application with separate frontend and backend services.
-
 - **Client (Frontend):**  
   https://pathpolish-client.vercel.app/
 
-- **Server (Backend API):**  
-  https://pathpolish-server.vercel.app/
-
-> ⚠️ Note: The backend is designed to be accessed via the frontend application and does not expose a public UI.
 
 
 ## 🚀 Overview
