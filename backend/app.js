@@ -55,7 +55,7 @@ app.use(morgan("dev"));
 // ===== View Engine =====
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
+app.set("trust proxy", 1); // trust first proxy
 // ===== Sessions (Vercel-safe) =====
 app.use(
   session({
@@ -71,7 +71,7 @@ app.use(
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      secure: process.env.NODE_ENV === "production",
+      secure: true, // Set to true for HTTPS; adjust if testing locally without HTTPS
     },
   }),
 );
