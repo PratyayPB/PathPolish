@@ -5,6 +5,20 @@
 ![Project Status](https://img.shields.io/badge/Status-In%20Development-yellow)
 ![Tech Stack](https://img.shields.io/badge/Stack-React%20%7C%20Tailwind%20%7C%20Next.js-blue)
 
+
+## 🌐 Live Deployment
+
+The project is deployed as a full-stack application with separate frontend and backend services.
+
+- **Client (Frontend):**  
+  https://pathpolish-client.vercel.app/
+
+- **Server (Backend API):**  
+  https://pathpolish-server.vercel.app/
+
+> ⚠️ Note: The backend is designed to be accessed via the frontend application and does not expose a public UI.
+
+
 ## 🚀 Overview
 PathPolish aims to bridge the gap between chaotic data and structured growth. By utilizing smart filtering and aesthetic design, the platform allows users to input their experiences and receive a "polished" visual path.
 
